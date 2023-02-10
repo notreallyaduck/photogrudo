@@ -20,7 +20,7 @@ def main():
     st.title("stodo")
 
     if st.session_state["logged_in"] is True:
-        st.image("Assets/jasraj.png")
+        # st.image("Assets/jasraj.png")
         st.text(f"You're logged in as {st.session_state['user']}")
     else:
 
