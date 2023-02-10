@@ -3,6 +3,10 @@ import configparser
 
 
 def main():
+    # initialise session state variables
+    if "logged_in" not in st.session_state:
+        st.session_state["logged_in"] = False
+
     if st.session_state['logged_in'] is True:
         st.set_page_config(
             page_title="this is not called stodo · Statistics",

@@ -37,6 +37,10 @@ def main():
 
 
 def update_config():
+    # initialise session state variables
+    if "logged_in" not in st.session_state:
+        st.session_state["logged_in"] = False
+
     config = configparser.ConfigParser()
     config.sections()
     config.read('user_data.stodo')
