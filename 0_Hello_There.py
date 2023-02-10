@@ -47,7 +47,7 @@ def main():
 
         except KeyError:
             st.text("Enter your credentials")
-            if user is not "" and user not in config:
+            if user != "" and user not in config:
                 config.add_section(user)
                 config[user]["name"] = user
                 config[user]['penguin'] = "Assets/motivation_penguin.gif"
@@ -68,7 +68,7 @@ def main():
                 st.text("do NOT use a password you care about. I beg of you, I do not want access to your passwords. DO NOT GIVE THEM TO ME.")
                 set_password = st.button("Save new password")
 
-                if set_password is True and password is not "":
+                if set_password is True and password != "":
                     config[user]["password"] = password
 
                     with open('user_data.stodo', 'w') as configfile:
