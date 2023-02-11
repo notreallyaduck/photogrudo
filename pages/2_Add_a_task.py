@@ -10,7 +10,7 @@ def main():
         config.read('user_data.stodo')
 
         st.set_page_config(
-            page_title="this is not called stodo · Add Task",
+            page_title="Photogrudo · Add Task",
             layout="centered",
             initial_sidebar_state="collapsed",
         )
@@ -75,7 +75,6 @@ def update_config():
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
-
 
 
 def add_task(task_type):

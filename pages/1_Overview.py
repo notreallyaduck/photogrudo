@@ -32,7 +32,7 @@ def main():
                 st.session_state["ltcmpl"].remove(i)
 
         st.set_page_config(
-            page_title="this is not called stodo · Overview",
+            page_title="Photogrudo · Overview",
             layout="centered",
             initial_sidebar_state="collapsed",
         )
