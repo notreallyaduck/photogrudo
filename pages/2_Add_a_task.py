@@ -28,8 +28,8 @@ def main():
         else:
             st.warning("Type your task")
 
-        st.text(f"Currently added priority tasks: {st.session_state['tdl']}")
-        st.text(f"Currently added at some point tasks: {st.session_state['tdfl']}")
+        st.write(f"Currently added priority tasks: {st.session_state['tdl']}")
+        st.write(f"Currently added at some point tasks: {st.session_state['tdfl']}")
         update_config()
 
     else:

@@ -20,24 +20,24 @@ def main():
             st.title("YOU HAVE COMPLETED 1 (ONE) TASK")
         elif st.session_state['num_complete'] > 1:
             st.title(f"YOU HAVE COMPLETED {str(st.session_state['num_complete'])} TASKS")
-            st.text("what you want a pat on the back?")
+            st.write("what you want a pat on the back?")
 
         if st.session_state['num_complete'] > 10:
             st.header("Stats")
-            st.text("Average time taken to complete tasks")
-            st.text("16000000934 days (make this)")  # TODO AVERAGE TIME TAKEN TO COMPLETE, rolling average, weekly average, monthly average
+            st.write("Average time taken to complete tasks")
+            st.write("16000000934 days (make this)")  # TODO AVERAGE TIME TAKEN TO COMPLETE, rolling average, weekly average, monthly average
             st.header("Number of tasks today")
-            st.text("0.000003")  # TODO NUM TASKS TODAY, compared to yesterday, compared to today last week
+            st.write("0.000003")  # TODO NUM TASKS TODAY, compared to yesterday, compared to today last week
             st.header("Number of tasks completed per day")
-            st.text("-92")  # TODO NUM TASKS DAILY AVERAGE, compared to last week, compared to last month
+            st.write("-92")  # TODO NUM TASKS DAILY AVERAGE, compared to last week, compared to last month
 
             st.header("All completed tasks")
 
             for i in st.session_state["ltcmpl"]:
-                st.text(i)
+                st.write(i)
 
         else:
-            st.text("Stats will appear here after you've completed a couple tasks. Keep at it.")
+            st.write("Stats will appear here after you've completed a couple tasks. Keep at it.")
 
             current_penguin = st.session_state['penguin']
 

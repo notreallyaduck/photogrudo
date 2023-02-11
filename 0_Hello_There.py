@@ -10,7 +10,7 @@ def main():
     st.set_page_config(
         page_title="this is not called stodo · Hello",
         layout="centered",
-        initial_sidebar_state="collapsed",
+        initial_sidebar_state="expanded",
     )
 
     # initialise session state variables
@@ -21,7 +21,8 @@ def main():
 
     if st.session_state["logged_in"] is True:
         # st.image("Assets/jasraj.png")
-        st.text(f"You're logged in as {st.session_state['user']}")
+        st.write(f"You're logged in as {st.session_state['user']}")
+        st.write("Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
     else:
 
         user = st.text_input("Username")
@@ -46,7 +47,7 @@ def main():
                     st.experimental_rerun()
 
         except KeyError:
-            st.text("Enter your credentials")
+            st.write("Enter your credentials")
             if user != "" and user not in config:
                 config.add_section(user)
                 config[user]["name"] = user
@@ -65,7 +66,7 @@ def main():
                 st.session_state['ltcmpl'] = []
                 st.session_state['num_complete'] = 0
                 password = st.text_input("Set a password", type="password")
-                st.text("do NOT use a password you care about. I beg of you, I do not want access to your passwords. DO NOT GIVE THEM TO ME.")
+                st.write("do NOT use a password you care about. I beg of you, I do not want access to your passwords. DO NOT GIVE THEM TO ME.")
                 set_password = st.button("Save new password")
 
                 if set_password is True and password != "":

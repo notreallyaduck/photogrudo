@@ -48,12 +48,12 @@ def main():
         col1, col2, col3 = st.columns(3)
 
         with col3:
-            st.header("Complete")
-            st.text("Completed tasks")
+            st.header("Done")
+            st.write("Completed tasks")
 
         with col1:
             st.header("Do now")
-            st.text("Priority Tasks")
+            st.write("Priority Tasks")
 
             for i in st.session_state['tdl']:
                 j = i.split("[")
@@ -64,7 +64,7 @@ def main():
 
         with col2:
             st.header("Do soon")
-            st.text("Do at some point")
+            st.write("Do at some point")
 
             for i in st.session_state['tdfl']:
                 j = i.split("[")
