@@ -28,19 +28,7 @@ def main():
         st.write(f"You're logged in as {st.session_state['user']}")
         st.write("Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
         st.write("I'm still making this thing, information may be subject to deletion.")
-        log_out = st.button("Log out of photogrudo")
-        if log_out is True:
-            del st.session_state["user"]
-            del st.session_state["penguin"]
-            del st.session_state['tdl']
-            del st.session_state['tdfl']
-            del st.session_state['cmpl']
-            del st.session_state['ltcmpl']
-            del st.session_state['num_complete']
-            del st.session_state["times_to_complete"]
-            del st.session_state["logged_in"]
-            del st.session_state["sign_in"]
-            st.experimental_rerun()
+
     else:
         if st.session_state["sign_in"] == "":
             st.write("Let's get started")
