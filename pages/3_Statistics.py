@@ -74,9 +74,9 @@ def main():
             st.write(average_time_to_complete) # Average time taken to complete tasks
 
             st.header("Number of tasks today")
-            st.write("0.000003")  # TODO NUM TASKS TODAY, compared to yesterday, compared to today last week
+            st.write("0.000003 (THIS WILL BE IMPLEMENTED SOON)")  # TODO NUM TASKS TODAY, compared to yesterday, compared to today last week
             st.header("Number of tasks completed per day")
-            st.write("-92")  # TODO NUM TASKS DAILY AVERAGE, compared to last week, compared to last month
+            st.write("-92 (THIS WILL BE IMPLEMENTED SOON)")  # TODO NUM TASKS DAILY AVERAGE, compared to last week, compared to last month
 
             st.header("All completed tasks")
 
