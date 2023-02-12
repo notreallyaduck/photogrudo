@@ -9,10 +9,32 @@ def main():
 
     if st.session_state['logged_in'] is True:
         st.set_page_config(
-            page_title="Photogrudo · Statistics",
+            page_title="Photogrudo · Statistics · THIS PAGE IS A WORK IN PROGRESS",
             layout="centered",
             initial_sidebar_state="collapsed",
         )
+
+        if "cmpl" not in st.session_state:
+            st.session_state['cmpl'] = []
+
+        for i in st.session_state["tdl"]:
+            if i == "":
+                st.session_state["tdl"].remove(i)
+
+        for i in st.session_state["tdfl"]:
+            if i == "":
+                st.session_state["tdfl"].remove(i)
+
+        for i in st.session_state["cmpl"]:
+            if i == "":
+                st.session_state["cmpl"].remove(i)
+
+        for i in st.session_state["ltcmpl"]:
+            if i == "":
+                st.session_state["ltcmpl"].remove(i)
+
+        if "cmpl" not in st.session_state:
+            st.session_state['cmpl'] = []
 
         if st.session_state['num_complete'] == 0:
             st.title("YOU HAVE ACCOMPLISHED ABSOLUTELY NOTHING")
@@ -25,7 +47,32 @@ def main():
         if st.session_state['num_complete'] > 10:
             st.header("Stats")
             st.write("Average time taken to complete tasks")
-            st.write("16000000934 days (make this)")  # TODO AVERAGE TIME TAKEN TO COMPLETE, rolling average, weekly average, monthly average
+
+            average_time_to_complete = 0
+
+            for i in st.session_state["times_to_complete"]:
+                if i != "":  # TODO properly fix this
+                    average_time_to_complete += int(i)
+
+            average_time_to_complete = round(average_time_to_complete/st.session_state["num_complete"])
+
+            if average_time_to_complete < 60:
+                average_time_to_complete = f"{average_time_to_complete} seconds"
+            elif average_time_to_complete > 60:
+                average_time_to_complete = f"{average_time_to_complete/60} minutes"
+            elif average_time_to_complete > 216000:
+                average_time_to_complete = f"{average_time_to_complete / 60 / 60} hours"
+            elif average_time_to_complete > 5184000:
+                average_time_to_complete = f"{average_time_to_complete / 60 / 60 / 24} days"
+            elif average_time_to_complete > 36288000:
+                average_time_to_complete = f"{average_time_to_complete / 60 / 60 / 24 / 7} weeks"
+            elif average_time_to_complete > 145152000:
+                average_time_to_complete = f"{average_time_to_complete / 60 / 60 / 24 / 7 / 4} months"
+            elif average_time_to_complete > 1886976000:
+                average_time_to_complete = f"{average_time_to_complete / 60 / 60 / 24 / 7 / 4} years"
+
+            st.write(average_time_to_complete) # Average time taken to complete tasks
+
             st.header("Number of tasks today")
             st.write("0.000003")  # TODO NUM TASKS TODAY, compared to yesterday, compared to today last week
             st.header("Number of tasks completed per day")
@@ -82,18 +129,27 @@ def update_config():
     tdfl_to_update = ""
     cmpl_to_update = ""
     ltcmpl_to_update = ""
+    times_to_update = ""
 
     for i in st.session_state['tdl']:
-        tdl_to_update += "`" + i
+        if i != "":
+            tdl_to_update += i + "`"
 
     for i in st.session_state['tdfl']:
-        tdfl_to_update += "`" + i
+        if i != "":
+            tdfl_to_update += i + "`"
 
     for i in st.session_state['cmpl']:
-        cmpl_to_update += "`" + i
+        if i != "":
+            cmpl_to_update += i + "`"
 
     for i in st.session_state['ltcmpl']:
-        ltcmpl_to_update += "`" + i
+        if i != "":
+            ltcmpl_to_update += i + "`"
+
+    for i in st.session_state["times_to_complete"]:
+        if i != "":
+            times_to_update += str(i) + "`"
 
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
@@ -103,10 +159,10 @@ def update_config():
     config[user]["cmpl"] = cmpl_to_update
     config[user]["ltcmpl"] = ltcmpl_to_update
     config[user]["num_complete"] = str(st.session_state['num_complete'])
+    config[user]["times_to_complete"] = times_to_update
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
-
 
 
 if __name__ == '__main__':

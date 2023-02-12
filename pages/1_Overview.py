@@ -1,5 +1,6 @@
 import streamlit as st
 import configparser
+import time
 
 
 def main():
@@ -8,10 +9,6 @@ def main():
         st.session_state["logged_in"] = False
 
     if st.session_state["logged_in"] is True:
-        config = configparser.ConfigParser()
-        config.sections()
-        config.read('user_data.stodo')
-
         if "cmpl" not in st.session_state:
             st.session_state['cmpl'] = []
 
@@ -31,14 +28,14 @@ def main():
             if i == "":
                 st.session_state["ltcmpl"].remove(i)
 
+        if "cmpl" not in st.session_state:
+            st.session_state['cmpl'] = []
+
         st.set_page_config(
             page_title="Photogrudo · Overview",
             layout="centered",
             initial_sidebar_state="collapsed",
         )
-
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
 
         complete = []
         complete_ids = []
@@ -56,22 +53,24 @@ def main():
             st.write("Priority Tasks")
 
             for i in st.session_state['tdl']:
-                j = i.split("[")
+                j = i.split(" · ")
                 st.checkbox(j[0], key=i)
                 if st.session_state[i] is True:
                     complete.append(j[0])
                     complete_ids.append(i)
+                    st.session_state["times_to_complete"].append(round(time.time()) - int(float(j[1])))
 
         with col2:
             st.header("Do soon")
             st.write("Do at some point")
 
             for i in st.session_state['tdfl']:
-                j = i.split("[")
+                j = i.split(" · ")
                 st.checkbox(j[0], key=i)
                 if st.session_state[i] is True:
                     complete.append(j[0])
                     complete_ids.append(i)
+                    st.session_state["times_to_complete"].append(round(time.time()) - int(float(j[1])))
 
         completed_tasks(complete_ids)
 
@@ -101,18 +100,27 @@ def update_config():
     tdfl_to_update = ""
     cmpl_to_update = ""
     ltcmpl_to_update = ""
+    times_to_update = ""
 
     for i in st.session_state['tdl']:
-        tdl_to_update += "`" + i
+        if i != "":
+            tdl_to_update += i + "`"
 
     for i in st.session_state['tdfl']:
-        tdfl_to_update += "`" + i
+        if i != "":
+            tdfl_to_update += i + "`"
 
     for i in st.session_state['cmpl']:
-        cmpl_to_update += "`" + i
+        if i != "":
+            cmpl_to_update += i + "`"
 
     for i in st.session_state['ltcmpl']:
-        ltcmpl_to_update += "`" + i
+        if i != "":
+            ltcmpl_to_update += i + "`"
+
+    for i in st.session_state["times_to_complete"]:
+        if i != "":
+            times_to_update += str(i) + "`"
 
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
@@ -122,6 +130,7 @@ def update_config():
     config[user]["cmpl"] = cmpl_to_update
     config[user]["ltcmpl"] = ltcmpl_to_update
     config[user]["num_complete"] = str(st.session_state['num_complete'])
+    config[user]["times_to_complete"] = times_to_update
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
