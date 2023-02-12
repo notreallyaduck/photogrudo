@@ -59,7 +59,9 @@ def main():
             elif add_some_point is True and add_priority is True:
                 add_type = "both selected"
 
-            if new_task and add_type is not "" and add_type is not "both selected":
+            st.multiselect("Tags:", options=("hello there", "this is a tag"))
+
+            if new_task and add_type != "" and add_type != "both selected":
                 add_button = st.button(f'Add "{new_task}" to: {add_type} tasks')
 
                 if add_button is True:

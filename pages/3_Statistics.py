@@ -54,22 +54,22 @@ def main():
                 if i != "":  # TODO properly fix this
                     average_time_to_complete += int(i)
 
-            average_time_to_complete = round(average_time_to_complete/st.session_state["num_complete"])
+            average_time_to_complete = average_time_to_complete/st.session_state["num_complete"]
 
             if average_time_to_complete < 60:
-                average_time_to_complete = f"{average_time_to_complete} seconds"
-            elif average_time_to_complete > 60:
-                average_time_to_complete = f"{average_time_to_complete/60} minutes"
-            elif average_time_to_complete > 216000:
-                average_time_to_complete = f"{average_time_to_complete / 60 / 60} hours"
-            elif average_time_to_complete > 5184000:
-                average_time_to_complete = f"{average_time_to_complete / 60 / 60 / 24} days"
-            elif average_time_to_complete > 36288000:
-                average_time_to_complete = f"{average_time_to_complete / 60 / 60 / 24 / 7} weeks"
-            elif average_time_to_complete > 145152000:
-                average_time_to_complete = f"{average_time_to_complete / 60 / 60 / 24 / 7 / 4} months"
-            elif average_time_to_complete > 1886976000:
-                average_time_to_complete = f"{average_time_to_complete / 60 / 60 / 24 / 7 / 4} years"
+                average_time_to_complete = f"{round(average_time_to_complete)} seconds"
+            elif 60 < average_time_to_complete < 3600:
+                average_time_to_complete = f"{round(average_time_to_complete/60)} minutes"
+            elif 3600 < average_time_to_complete < 86400:
+                average_time_to_complete = f"{round(average_time_to_complete / 3600)} hours"
+            elif 86400 < average_time_to_complete < 604800:
+                average_time_to_complete = f"{round(average_time_to_complete / 86400)} days"
+            elif 604800 < average_time_to_complete < 2629746:
+                average_time_to_complete = f"{round(average_time_to_complete / 604800)} weeks"
+            elif 2629746 < average_time_to_complete < 31536000:
+                average_time_to_complete = f"{round(average_time_to_complete / 2629746)} months"
+            elif average_time_to_complete >= 31536000:
+                average_time_to_complete = f"{round(average_time_to_complete / 31536000)} years"
 
             st.write(average_time_to_complete) # Average time taken to complete tasks
 
