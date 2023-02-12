@@ -58,7 +58,6 @@ def main():
                         st.session_state['cmpl'] = config[user]["cmpl"].split("`")
                         st.session_state['ltcmpl'] = config[user]["ltcmpl"].split("`")
                         st.session_state['num_complete'] = int(config[user]["num_complete"])
-                        st.session_state["times_to_complete"] = config[user]["times_to_complete"].split("`")
 
                         with open('user_data.stodo', 'w') as configfile:
                             config.write(configfile)
@@ -93,7 +92,6 @@ def main():
                 st.session_state['cmpl'] = []
                 st.session_state['ltcmpl'] = []
                 st.session_state['num_complete'] = 0
-                st.session_state["times_to_complete"] = []
                 password = st.text_input(f"Set a password for {user}", type="password")
                 st.write("do NOT use a password you care about. I beg of you, I do not want access to your passwords. DO NOT GIVE THEM TO ME.")
                 set_password = st.button("Save new password")
