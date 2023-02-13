@@ -11,7 +11,7 @@ def main():
         st.set_page_config(
             page_title="Photogrudo · Add Task",
             layout="centered",
-            initial_sidebar_state="collapsed",
+            initial_sidebar_state="expanded",
         )
 
         if "cmpl" not in st.session_state:

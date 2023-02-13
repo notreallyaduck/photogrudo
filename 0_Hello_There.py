@@ -69,9 +69,10 @@ def main():
                         time.sleep(3)
                 except KeyError:
                     st.error("Looks like that username does not exist. Do you have an account? Check if you've spelled it wrong.")
-                    if st.button("Go back") is True:
-                        st.session_state["sign_in"] = ""
-                        st.experimental_rerun()
+
+            if st.button("Go back") is True:
+                st.session_state["sign_in"] = ""
+                st.experimental_rerun()
 
         elif st.session_state["sign_in"] == "new":
             user = st.text_input("Make a username for your new account")
@@ -113,6 +114,10 @@ def main():
                 if retry_new_account:
                     st.session_state["sign_in"] = ""
                     st.experimental_rerun()
+
+            if st.button("Go back") is True:
+                st.session_state["sign_in"] = ""
+                st.experimental_rerun()
 
 
 # Press the green button in the gutter to run the script.
