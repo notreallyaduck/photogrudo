@@ -22,7 +22,7 @@ def main():
         st.session_state["sign_in"] = ""
 
     st.title("Photogrudo")
-    st.write("photo-groo-doo")
+    st.write("photo-gru-doo")
 
     if st.session_state["logged_in"] is True:
         st.write(f"You're logged in as {st.session_state['user']}")
