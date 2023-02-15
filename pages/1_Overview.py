@@ -36,7 +36,7 @@ def main():
         st.set_page_config(
             page_title="Photogrudo · Overview",
             layout="centered",
-            initial_sidebar_state="collapsed",
+            initial_sidebar_state="auto",
         )
 
         complete = []
