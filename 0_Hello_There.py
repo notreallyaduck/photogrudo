@@ -22,15 +22,14 @@ def main():
         st.session_state["sign_in"] = ""
 
     st.title("Photogrudo")
+    st.write("photo-groo-doo")
 
     if st.session_state["logged_in"] is True:
-        # st.image(f"Profile Pictures/{st.session_state['user']}")
         st.write(f"You're logged in as {st.session_state['user']}")
         st.write("Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
         st.write("I'm still making this thing, information may be subject to deletion.")
     else:
         if st.session_state["sign_in"] == "":
-            st.write("Let's get started")
 
             new_user = st.button("Make an account!")
             returning_user = st.button("Sign in")
@@ -59,6 +58,7 @@ def main():
                         st.session_state['ltcmpl'] = config[user]["ltcmpl"].split("`")
                         st.session_state['num_complete'] = int(config[user]["num_complete"])
                         st.session_state["times_to_complete"] = config[user]["times_to_complete"].split("`")
+                        st.session_state["cmpl_keys"] = config[user]["cmpl_keys"].split("`")
 
                         with open('user_data.stodo', 'w') as configfile:
                             config.write(configfile)
@@ -68,6 +68,7 @@ def main():
                         st.error("Username and password do not match")
                         time.sleep(3)
                 except KeyError:
+                    st.experimental_rerun()
                     st.error("Looks like that username does not exist. Do you have an account? Check if you've spelled it wrong.")
 
             if st.button("Go back") is True:
@@ -86,6 +87,7 @@ def main():
                 config[user]["cmpl"] = ""
                 config[user]["ltcmpl"] = ""
                 config[user]['num_complete'] = "0"
+                st.session_state["times_to_complete"] = []
 
                 st.session_state["user"] = user
                 st.session_state["penguin"] = "Assets/motivation_penguin.gif"

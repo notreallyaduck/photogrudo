@@ -38,49 +38,55 @@ def main():
 
         st.title("Add a task")
 
-        col1, col2 = st.columns(2)
+        add_type = ""
 
-        with col1:
-            col1.write(f"You currently have {len(st.session_state['tdl'])} priority and {len(st.session_state['tdfl'])} do soon tasks")
-            new_task = st.text_input("Enter Task", key="nte", value="").strip()
+        st.write(f"You currently have {len(st.session_state['tdl'])} priority and {len(st.session_state['tdfl'])} do soon tasks")
+        new_task = st.text_input("Enter Task", key="nte", value="").strip()
 
-        with col2:
-            # add_type = st.selectbox('What type of task is this?', ('Select a type', 'Priority', 'Do soon'), key="select_type")
-            st.write("What type of task is this?")
-            add_priority = st.checkbox("Priority")
-            add_some_point = st.checkbox("Do soon")
+        # add_type = st.selectbox('What type of task is this?', ('Select a type', 'Priority', 'Do soon'), key="select_type")
+        st.write("What type of task is this?")
+        add_priority = st.checkbox("Priority")
+        add_some_point = st.checkbox("Do soon")
 
-            if add_priority is True and add_some_point is False:
-                add_type = "Priority"
-            elif add_some_point is True and add_priority is False:
-                add_type = "do soon"
-            elif add_priority is False and add_some_point is False:
-                add_type = ""
-            elif add_some_point is True and add_priority is True:
-                add_type = "both selected"
+        if add_priority is True and add_some_point is False:
+            add_type = "Priority"
+        elif add_some_point is True and add_priority is False:
+            add_type = "do soon"
+        elif add_priority is False and add_some_point is False:
+            add_type = ""
+        elif add_some_point is True and add_priority is True:
+            add_type = "both selected"
 
-            st.multiselect("Tags:", options=("hello there", "this is a tag"))
+        due = st.radio("Is this task due?", options=("Task is due", "Task is not due"), label_visibility="collapsed")
+        show_date = True
 
-            if new_task and add_type != "" and add_type != "both selected":
-                add_button = st.button(f'Add "{new_task}" to: {add_type} tasks')
+        if due == "Task is due":
+            show_date = False
+        elif due == "Task is not due":
+            show_date = True
 
-                if add_button is True:
-                    add_task(add_type)
-                    col1.success(f"Successfully added {new_task}.")
-                    time.sleep(1)
-                    st.experimental_rerun()
+        due_date = st.date_input("Date due", disabled=show_date)
 
-            elif add_type == "" and not new_task:
-                col1.info("Type the name of your task and select the type of task you want to add")
+        if new_task and add_type != "" and add_type != "both selected":
+            add_button = st.button(f'Add "{new_task}" to: {add_type} tasks')
 
-            elif not new_task:
-                col1.warning("Type your task")
+            if add_button is True:
+                add_task(new_task, add_type, due_date)
+                st.success(f"Successfully added {new_task}.")
+                time.sleep(1)
+                st.experimental_rerun()
 
-            elif add_type == "":
-                col1.warning("What type of task is this?")
+        elif add_type == "" and not new_task:
+            st.info("Type the name of your task and select the type of task you want to add")
 
-            elif add_type == "both selected":
-                col1.warning("Select one option")
+        elif not new_task:
+            st.warning("Type your task")
+
+        elif add_type == "":
+            st.warning("What type of task is this?")
+
+        elif add_type == "both selected":
+            st.warning("Select one option")
 
         update_config()
 
@@ -121,6 +127,7 @@ def update_config():
         if i != "":
             times_to_update += str(i) + "`"
 
+
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
@@ -135,12 +142,15 @@ def update_config():
         config.write(configfile)
 
 
-def add_task(task_type):
-    task = st.session_state["nte"] + " · " + str(time.time())
+
+def add_task(task, task_type, due_date):
     if task != "":
         if task_type == "Priority":
+            task = st.session_state["nte"] + " · " + str(time.time()) + " · " + str(due_date) + " · " + "tdl"
             st.session_state['tdl'].append(task)
+
         elif task_type == "do soon":
+            task = st.session_state["nte"] + " · " + str(time.time()) + " · " + str(due_date) + " · " + "tdfl"
             st.session_state['tdfl'].append(task)
 
 

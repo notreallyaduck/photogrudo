@@ -1,3 +1,6 @@
+import datetime
+import time
+
 import streamlit as st
 import configparser
 
@@ -44,7 +47,7 @@ def main():
             st.title(f"YOU HAVE COMPLETED {str(st.session_state['num_complete'])} TASKS")
             st.write("what you want a pat on the back?")
 
-        if st.session_state['num_complete'] > 10:
+        if st.session_state['num_complete'] >= 10:
             st.header("Stats")
             st.write("Average time taken to complete tasks")
 
@@ -77,11 +80,24 @@ def main():
             st.write("0.000003 (THIS WILL BE IMPLEMENTED SOON)")  # TODO NUM TASKS TODAY, compared to yesterday, compared to today last week
             st.header("Number of tasks completed per day")
             st.write("-92 (THIS WILL BE IMPLEMENTED SOON)")  # TODO NUM TASKS DAILY AVERAGE, compared to last week, compared to last month
+            st.write(" ")
 
-            st.header("All completed tasks")
+            with st.expander("All completed tasks"):
 
-            for i in st.session_state["ltcmpl"]:
-                st.write(i)
+                for i in st.session_state["ltcmpl"]:
+                    j = i.split(" · ")
+                    date_due = j[2].split("-")
+
+                    date_time = datetime.datetime(int(date_due[0]), int(date_due[1]), int(date_due[2]))
+
+                    when_due = (time.time() - time.mktime(date_time.timetuple()))/86400
+
+                    if when_due < 0:
+                        st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due {abs(round(when_due))} days in the future")
+                    elif when_due <= 1:
+                        st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due yesterday")
+                    elif when_due > 1:
+                        st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due {round(when_due)} days ago")
 
         else:
             st.write("Stats will appear here after you've completed a couple tasks. Keep at it.")
@@ -151,6 +167,7 @@ def update_config():
         if i != "":
             times_to_update += str(i) + "`"
 
+
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
@@ -163,6 +180,7 @@ def update_config():
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
+
 
 
 if __name__ == '__main__':

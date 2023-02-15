@@ -1,3 +1,5 @@
+import datetime
+
 import streamlit as st
 import configparser
 import time
@@ -34,13 +36,29 @@ def main():
         st.set_page_config(
             page_title="Photogrudo · Overview",
             layout="centered",
-            initial_sidebar_state="expanded",
+            initial_sidebar_state="collapsed",
         )
 
         complete = []
         complete_ids = []
 
         st.title('Overview')
+
+        for i in st.session_state['tdl']:
+            j = i.split(" · ")
+            h = j[2].split("-")
+
+            date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
+            if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
+                st.write(f"[{j[0]}] is due soon · {h[2]}/{h[1]}/{h[0]}")
+
+        for i in st.session_state['tdfl']:
+            j = i.split(" · ")
+            h = j[2].split("-")
+
+            date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
+            if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
+                st.write(f"{j[0]} is due soon · {h[2]}/{h[1]}/{h[0]} · Get to it")
 
         col1, col2, col3 = st.columns(3)
 
@@ -76,7 +94,17 @@ def main():
 
         with col3:
             for i in st.session_state["cmpl"]:
-                col3.text(i)
+                j = i.split(" · ")
+
+                task_type = ""
+
+                if j[3] == "tdl":
+                    task_type = "Priority"
+                elif j[3] == "tdfl":
+                    task_type = "At some point"
+
+                col3.write(f"{j[0]}: {task_type}")
+
             if len(st.session_state["cmpl"]) > 0:
                 delete_tasks = st.button("Delete completed tasks")
                 if delete_tasks is True:
@@ -125,7 +153,6 @@ def update_config():
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
-    # config.set(user, 'tdl', str(st.session_state["tdl"]))
     config[user]["tdfl"] = tdfl_to_update
     config[user]["cmpl"] = cmpl_to_update
     config[user]["ltcmpl"] = ltcmpl_to_update
