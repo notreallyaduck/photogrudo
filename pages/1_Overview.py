@@ -42,7 +42,7 @@ def main():
         complete = []
         complete_ids = []
 
-        st.title('Overview')
+        st.title(f'Welcome back, {st.session_state["user"]}!')
 
         for i in st.session_state['tdl']:
             j = i.split(" · ")
