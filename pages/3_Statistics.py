@@ -74,7 +74,7 @@ def main():
             elif average_time_to_complete >= 31536000:
                 average_time_to_complete = f"{round(average_time_to_complete / 31536000)} years"
 
-            st.write(average_time_to_complete) # Average time taken to complete tasks
+            st.write(average_time_to_complete)  # Average time taken to complete tasks
 
             st.header("Number of tasks today")
             st.write("0.000003 (THIS WILL BE IMPLEMENTED SOON)")  # TODO NUM TASKS TODAY, compared to yesterday, compared to today last week
@@ -167,7 +167,6 @@ def update_config():
         if i != "":
             times_to_update += str(i) + "`"
 
-
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
@@ -180,7 +179,6 @@ def update_config():
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
-
 
 
 if __name__ == '__main__':

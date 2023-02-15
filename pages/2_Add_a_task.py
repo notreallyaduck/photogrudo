@@ -127,7 +127,6 @@ def update_config():
         if i != "":
             times_to_update += str(i) + "`"
 
-
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
@@ -140,7 +139,6 @@ def update_config():
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
-
 
 
 def add_task(task, task_type, due_date):
