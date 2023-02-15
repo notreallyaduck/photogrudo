@@ -58,7 +58,6 @@ def main():
                         st.session_state['ltcmpl'] = config[user]["ltcmpl"].split("`")
                         st.session_state['num_complete'] = int(config[user]["num_complete"])
                         st.session_state["times_to_complete"] = config[user]["times_to_complete"].split("`")
-                        st.session_state["cmpl_keys"] = config[user]["cmpl_keys"].split("`")
 
                         with open('user_data.stodo', 'w') as configfile:
                             config.write(configfile)
@@ -68,7 +67,6 @@ def main():
                         st.error("Username and password do not match")
                         time.sleep(3)
                 except KeyError:
-                    st.experimental_rerun()
                     st.error("Looks like that username does not exist. Do you have an account? Check if you've spelled it wrong.")
 
             if st.button("Go back") is True:
