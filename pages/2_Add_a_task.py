@@ -59,13 +59,14 @@ def main():
 
         due = st.radio("Is this task due?", options=("Task is due", "Task is not due"), label_visibility="collapsed")
         show_date = True
+        due_date = "No due date"
 
         if due == "Task is due":
             show_date = False
+            due_date = st.date_input("Date due")
+
         elif due == "Task is not due":
             show_date = True
-
-        due_date = st.date_input("Date due", disabled=show_date)
 
         if new_task and add_type != "" and add_type != "both selected":
             add_button = st.button(f'Add "{new_task}" to: {add_type} tasks')

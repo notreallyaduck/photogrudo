@@ -86,18 +86,21 @@ def main():
 
                 for i in st.session_state["ltcmpl"]:
                     j = i.split(" · ")
-                    date_due = j[2].split("-")
+                    if j[2] != "No due date":
+                        date_due = j[2].split("-")
 
-                    date_time = datetime.datetime(int(date_due[0]), int(date_due[1]), int(date_due[2]))
+                        date_time = datetime.datetime(int(date_due[0]), int(date_due[1]), int(date_due[2]))
 
-                    when_due = (time.time() - time.mktime(date_time.timetuple()))/86400
+                        when_due = (time.time() - time.mktime(date_time.timetuple()))/86400
 
-                    if when_due < 0:
-                        st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due {abs(round(when_due))} days in the future")
-                    elif when_due <= 1:
-                        st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due yesterday")
-                    elif when_due > 1:
-                        st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due {round(when_due)} days ago")
+                        if when_due < 0:
+                            st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due {abs(round(when_due))} days in the future")
+                        elif when_due <= 1:
+                            st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due yesterday")
+                        elif when_due > 1:
+                            st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due {round(when_due)} days ago")
+                    else:
+                        st.write(f"No due date · {j[0]}")
 
         else:
             st.write("Stats will appear here after you've completed a couple tasks. Keep at it.")

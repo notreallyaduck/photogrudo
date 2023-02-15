@@ -46,11 +46,12 @@ def main():
 
         for i in st.session_state['tdl']:
             j = i.split(" · ")
-            h = j[2].split("-")
+            if j[2] != "No due date":
+                h = j[2].split("-")
 
-            date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
-            if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
-                st.write(f"[{j[0]}] is due soon · {h[2]}/{h[1]}/{h[0]}")
+                date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
+                if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
+                    st.write(f"[{j[0]}] is due soon · {h[2]}/{h[1]}/{h[0]}")
 
         for i in st.session_state['tdfl']:
             j = i.split(" · ")
