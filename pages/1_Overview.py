@@ -42,7 +42,10 @@ def main():
         complete = []
         complete_ids = []
 
-        st.title(f'Welcome back, {st.session_state["user"]}!')
+        if st.session_state["sign_in"] == "return":
+            st.title(f'Welcome back, {st.session_state["user"]}!')
+        elif st.session_state["sign_in"] == "new":
+            st.title(f'Welcome to Photogrudo, {st.session_state["user"]}!')
 
         for i in st.session_state['tdl']:
             j = i.split(" · ")
