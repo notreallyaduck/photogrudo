@@ -30,6 +30,8 @@ def main():
         st.write("I'm still making this thing, information may be subject to deletion.")
         if st.button("Logout") is True:
             st.session_state["sign_in"] = ""
+            st.session_state["logged_in"] = False
+            st.experimental_rerun()
     else:
         if st.session_state["sign_in"] == "":
 
