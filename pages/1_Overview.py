@@ -46,6 +46,7 @@ def main():
             st.title(f'Welcome back, {st.session_state["user"]}!')
         elif st.session_state["sign_in"] == "new":
             st.title(f'Welcome to Photogrudo, {st.session_state["user"]}!')
+        st.write(" ")
 
         for i in st.session_state['tdl']:
             j = i.split(" · ")
