@@ -28,6 +28,8 @@ def main():
         st.write(f"You're logged in as {st.session_state['user']}")
         st.write("Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
         st.write("I'm still making this thing, information may be subject to deletion.")
+        if st.button("Logout") is True:
+            st.session_state["sign_in"] = ""
     else:
         if st.session_state["sign_in"] == "":
 

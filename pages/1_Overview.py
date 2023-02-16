@@ -62,7 +62,6 @@ def main():
 
             if j[2] != "No due date":
                 h = j[2].split("-")
-
                 date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
                 if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
                     st.write(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
@@ -79,7 +78,13 @@ def main():
 
             for i in st.session_state['tdl']:
                 j = i.split(" · ")
-                st.checkbox(j[0], key=i)
+                h = j[2].split("-")
+                if len(h) == 3:
+                    st.checkbox(f"{j[0]} · Due {h[2]}/{h[1]}/{h[0]}", key=i)
+
+                else:
+                    st.checkbox(f"{j[0]} · No due date", key=i)
+
                 if st.session_state[i] is True:
                     complete.append(j[0])
                     complete_ids.append(i)
@@ -91,7 +96,12 @@ def main():
 
             for i in st.session_state['tdfl']:
                 j = i.split(" · ")
-                st.checkbox(j[0], key=i)
+                h = j[2].split("-")
+                if len(h) == 3:
+                    st.checkbox(f"{j[0]} · Due {h[2]}/{h[1]}/{h[0]}", key=i)
+
+                else:
+                    st.checkbox(f"{j[0]} · No due date", key=i)
                 if st.session_state[i] is True:
                     complete.append(j[0])
                     complete_ids.append(i)
