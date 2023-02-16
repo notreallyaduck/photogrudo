@@ -91,14 +91,12 @@ def main():
 
                         date_time = datetime.datetime(int(date_due[0]), int(date_due[1]), int(date_due[2]))
 
-                        when_due = (time.time() - time.mktime(date_time.timetuple()))/86400
+                        when_made = round((time.time() - int(float(j[1])))/86400)
 
-                        if when_due < 0:
-                            st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due {abs(round(when_due))} days in the future")
-                        elif when_due <= 1:
-                            st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due yesterday")
-                        elif when_due > 1:
-                            st.write(f"{date_due[2]}/{date_due[1]}/{date_due[0]} · {j[0]} was due {round(when_due)} days ago")
+                        if when_made <= 1:
+                            st.write(f"{j[0]} · Was due {date_due[2]}/{date_due[1]}/{date_due[0]} · Created recently")
+                        elif when_made > 1:
+                            st.write(f"{j[0]} · Was due {date_due[2]}/{date_due[1]}/{date_due[0]} · Created {when_made} days ago")
                     else:
                         st.write(f"No due date · {j[0]}")
 

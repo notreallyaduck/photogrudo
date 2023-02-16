@@ -60,9 +60,12 @@ def main():
             j = i.split(" · ")
             h = j[2].split("-")
 
-            date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
-            if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
-                st.write(f"{j[0]} is due soon · {h[2]}/{h[1]}/{h[0]} · Get to it")
+            try:
+                date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
+                if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
+                    st.write(f"{j[0]} is due soon · {h[2]}/{h[1]}/{h[0]} · Get to it")
+            except IndexError:
+                pass
 
         col1, col2, col3 = st.columns(3)
 

@@ -45,11 +45,11 @@ def main():
 
         # add_type = st.selectbox('What type of task is this?', ('Select a type', 'Priority', 'Do soon'), key="select_type")
         st.write("What type of task is this?")
-        add_priority = st.checkbox("Priority")
+        add_priority = st.checkbox("Do now")
         add_some_point = st.checkbox("Do soon")
 
         if add_priority is True and add_some_point is False:
-            add_type = "Priority"
+            add_type = "do now"
         elif add_some_point is True and add_priority is False:
             add_type = "do soon"
         elif add_priority is False and add_some_point is False:
