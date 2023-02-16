@@ -54,7 +54,7 @@ def main():
 
                 date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
                 if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
-                    st.write(f"[{j[0]}] is due soon · {h[2]}/{h[1]}/{h[0]}")
+                    st.write(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
 
         for i in st.session_state['tdfl']:
             j = i.split(" · ")
@@ -106,9 +106,9 @@ def main():
                 task_type = ""
 
                 if j[3] == "tdl":
-                    task_type = "Priority"
+                    task_type = "Do now"
                 elif j[3] == "tdfl":
-                    task_type = "At some point"
+                    task_type = "Do soon"
 
                 col3.write(f"{j[0]}: {task_type}")
 

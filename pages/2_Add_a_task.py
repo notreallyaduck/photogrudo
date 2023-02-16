@@ -144,7 +144,7 @@ def update_config():
 
 def add_task(task, task_type, due_date):
     if task != "":
-        if task_type == "Priority":
+        if task_type == "do now":
             task = st.session_state["nte"] + " · " + str(time.time()) + " · " + str(due_date) + " · " + "tdl"
             st.session_state['tdl'].append(task)
 
