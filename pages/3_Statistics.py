@@ -89,8 +89,6 @@ def main():
                     if j[2] != "No due date":
                         date_due = j[2].split("-")
 
-                        date_time = datetime.datetime(int(date_due[0]), int(date_due[1]), int(date_due[2]))
-
                         when_made = round((time.time() - int(float(j[1])))/86400)
 
                         if when_made <= 1:
@@ -98,7 +96,7 @@ def main():
                         elif when_made > 1:
                             st.write(f"{j[0]} · Was due {date_due[2]}/{date_due[1]}/{date_due[0]} · Created {when_made} days ago")
                     else:
-                        st.write(f"{j[0]} · No due date")
+                        st.write(f"{j[0]} · No due date · Created {when_made} days ago")
 
         else:
             st.write("Stats will appear here after you've completed a couple tasks. Keep at it.")

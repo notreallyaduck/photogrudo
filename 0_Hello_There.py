@@ -11,7 +11,7 @@ def main():
     st.set_page_config(
         page_title="Photogrudo · Hello",
         layout="centered",
-        initial_sidebar_state="auto",
+        initial_sidebar_state="auto"
     )
 
     # initialise session state variables
