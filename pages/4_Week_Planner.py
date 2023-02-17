@@ -8,7 +8,7 @@ def main():
 
     if st.session_state["logged_in"] is True:
         st.set_page_config(
-            page_title="Photogrudo · Settings",
+            page_title="Photogrudo · Weekly Planner",
             layout="centered",
             initial_sidebar_state="auto",
         )
@@ -35,8 +35,10 @@ def main():
         if "cmpl" not in st.session_state:
             st.session_state['cmpl'] = []
 
-        st.title("Settings")
-        st.write("The pinnacle of customisation")
+        st.title("The photogrudo weekly planner")
+        st.write("Building short term habits (basically not habits)")
+
+
 
     else:
         st.error("Log in please")
