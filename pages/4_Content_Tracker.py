@@ -137,7 +137,7 @@ def main():
                     new_topic = st.text_input("Topic to add").split(",")
                     add_topic = st.button("Add")
 
-                    if add_topic is True and new_topic[0] is not "":
+                    if add_topic is True and new_topic[0] != "":
                         index_to_modify = 0
                         for i in st.session_state["content_planner"]:
                             if i.startswith(subject_to_add_topic):
@@ -157,7 +157,7 @@ def main():
                                 time.sleep(1.5)
 
                         st.experimental_rerun()
-                    elif new_topic[0] is "":
+                    elif new_topic[0] == "":
                         st.info("Type the topics you want to add, separate them with commas to add multiple.")
 
         else:
