@@ -145,6 +145,7 @@ def update_config():
     cmpl_to_update = ""
     ltcmpl_to_update = ""
     times_to_update = ""
+    content_to_update = ""
 
     for i in st.session_state['tdl']:
         if i != "":
@@ -166,6 +167,10 @@ def update_config():
         if i != "":
             times_to_update += str(i) + "`"
 
+    for i in st.session_state["content_planner"]:
+        if i != "":
+            content_to_update += i + "`"
+
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
@@ -175,6 +180,7 @@ def update_config():
     config[user]["ltcmpl"] = ltcmpl_to_update
     config[user]["num_complete"] = str(st.session_state['num_complete'])
     config[user]["times_to_complete"] = times_to_update
+    config[user]["content_planner"] = content_to_update
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
