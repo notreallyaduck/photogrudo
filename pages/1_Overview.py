@@ -67,6 +67,14 @@ def main():
                 if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
                     st.write(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
 
+        checkbox_function = st.radio("Checkboxes should:", options=("Mark tasks as complete", "Delete tasks"))
+        checkbox_deletes = False
+
+        if checkbox_function == "Mark tasks as complete":
+            checkbox_deletes = False
+        elif checkbox_function == "Delete tasks":
+            checkbox_deletes = True
+
         col1, col2, col3 = st.columns(3)
 
         with col3:
@@ -108,7 +116,7 @@ def main():
                     complete_ids.append(i)
                     st.session_state["times_to_complete"].append(round(time.time()) - int(float(j[1])))
 
-        completed_tasks(complete_ids)
+        completed_tasks(complete_ids, checkbox_deletes)
 
         with col3:
             for i in st.session_state["cmpl"]:
@@ -133,6 +141,34 @@ def main():
 
     else:
         st.error("Log in please")
+
+
+def completed_tasks(keys, delete):
+    removed_something = False
+
+    for i in keys:
+
+        if delete is False:
+            # add to complete and long term complete list in session_state
+            st.session_state["cmpl"].append(i)
+            st.session_state["ltcmpl"].append(i)
+            st.session_state['num_complete'] += 1
+
+        # remove keys of completed tasks from respective lists in session_state
+        if i in st.session_state["tdl"]:
+            st.session_state["tdl"].remove(i)
+            removed_something = True
+        if i in st.session_state["tdfl"]:
+            st.session_state["tdfl"].remove(i)
+            removed_something = True
+
+        if i in st.session_state:
+            del st.session_state[i]
+            removed_something = True
+
+    # rerun streamlit to update lists in overview
+    if removed_something is True:
+        st.experimental_rerun()
 
 
 def update_config():
@@ -179,32 +215,6 @@ def update_config():
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
-
-
-def completed_tasks(keys):
-    removed_something = False
-
-    for i in keys:
-        # add to complete and long term complete list in session_state
-        st.session_state["cmpl"].append(i)
-        st.session_state["ltcmpl"].append(i)
-        st.session_state['num_complete'] += 1
-
-        # remove keys of completed tasks from respective lists in session_state
-        if i in st.session_state["tdl"]:
-            st.session_state["tdl"].remove(i)
-            removed_something = True
-        if i in st.session_state["tdfl"]:
-            st.session_state["tdfl"].remove(i)
-            removed_something = True
-
-        if i in st.session_state:
-            del st.session_state[i]
-            removed_something = True
-
-    # rerun streamlit to update lists in overview
-    if removed_something is True:
-        st.experimental_rerun()
 
 
 # Press the green button in the gutter to run the script.

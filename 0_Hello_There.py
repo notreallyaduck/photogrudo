@@ -4,9 +4,6 @@ import time
 
 
 def main():
-    config = configparser.ConfigParser()
-    config.sections()
-    config.read('user_data.stodo')
 
     st.set_page_config(
         page_title="Photogrudo · Hello",
@@ -25,21 +22,8 @@ def main():
     st.write("photo-gru-doo")
 
     if st.session_state["logged_in"] is True:
-        st.header("Hey!")
+        successful_login()
 
-        st.write(f"You're logged in as {st.session_state['user']}")
-        st.write("Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
-
-        st.write(" ")
-        st.write(" ")
-
-        st.header("Photogrudo got some updates")
-        st.write("Check out the photogrudo content tracker, a simple way to visualise your understanding and progression through a subject.")
-
-        if st.button("Logout") is True:
-            st.session_state["sign_in"] = ""
-            st.session_state["logged_in"] = False
-            st.experimental_rerun()
     else:
         if st.session_state["sign_in"] == "":
 
@@ -58,81 +42,120 @@ def main():
             password = st.text_input("Password", type="password")
 
             if user != "":
-                try:
-                    login = st.button(f"Log in to {config[user]['name']}")
-                    if password == config[user]["password"] and login is True:
-                        st.session_state['logged_in'] = True
-                        st.session_state["user"] = config[user]["name"]
-                        st.session_state["penguin"] = config[user]['penguin']
-                        st.session_state['tdl'] = config[user]["tdl"].split("`")
-                        st.session_state['tdfl'] = config[user]["tdfl"].split("`")
-                        st.session_state['cmpl'] = config[user]["cmpl"].split("`")
-                        st.session_state['ltcmpl'] = config[user]["ltcmpl"].split("`")
-                        st.session_state['num_complete'] = int(config[user]["num_complete"])
-                        st.session_state["times_to_complete"] = config[user]["times_to_complete"].split("`")
-                        st.session_state["content_planner"] = config[user]["content_planner"].split("`")
-
-                        with open('user_data.stodo', 'w') as configfile:
-                            config.write(configfile)
-
-                        st.experimental_rerun()
-                    elif password != config[user]["password"] and password != "" and login is True:
-                        st.error("Username and password do not match")
-                        time.sleep(3)
-                except KeyError:
-                   st.error("Looks like that username does not exist. Do you have an account? Check if you've spelled it wrong.")
+                login_attempt(user, password)
 
             if st.button("Go back") is True:
                 st.session_state["sign_in"] = ""
                 st.experimental_rerun()
 
         elif st.session_state["sign_in"] == "new":
-            user = st.text_input("Make a username for your new account")
+            add_user()
 
-            if user != "" and user not in config:
-                config.add_section(user)
-                config[user]["name"] = user
-                config[user]['penguin'] = "Assets/motivation_penguin.gif"
-                config[user]["tdl"] = ""
-                config[user]["tdfl"] = ""
-                config[user]["cmpl"] = ""
-                config[user]["ltcmpl"] = ""
-                config[user]['num_complete'] = "0"
-                config[user]["times_to_complete"] = ""
-                config[user]["content_planner"] = ""
 
-                st.session_state["user"] = user
-                st.session_state["penguin"] = "Assets/motivation_penguin.gif"
-                st.session_state['tdl'] = []
-                st.session_state['tdfl'] = []
-                st.session_state['cmpl'] = []
-                st.session_state['ltcmpl'] = []
-                st.session_state['num_complete'] = 0
-                st.session_state["times_to_complete"] = []
-                st.session_state["content_planner"] = []
+def successful_login():
+    st.header("Hey!")
 
-                password = st.text_input(f"Set a password for {user}", type="password")
-                st.write("do NOT use a password you care about. I beg of you, I do not want access to your passwords. DO NOT GIVE THEM TO ME.")
-                set_password = st.button("Save new password")
+    st.write(f"You're logged in as {st.session_state['user']}")
+    st.write(
+        "Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
 
-                if set_password is True and password != "":
-                    config[user]["password"] = password
+    st.write(" ")
+    st.write(" ")
 
-                    with open('user_data.stodo', 'w') as configfile:
-                        config.write(configfile)
-                        st.session_state['logged_in'] = True
+    st.header("Photogrudo got some updates")
+    st.write(
+        "Check out the photogrudo content tracker, a simple way to visualise your understanding and progression through a subject.")
 
-                    st.experimental_rerun()
-            elif user in config:
-                st.error("Looks like that username is taken! Press the sign in button to log in or choose a different username.")
-                retry_new_account = st.button(f"Alright! I'll try to sign in to {user} or make a new account that isn't called {user}.")
-                if retry_new_account:
-                    st.session_state["sign_in"] = ""
-                    st.experimental_rerun()
+    if st.button("Logout") is True:
+        st.session_state["sign_in"] = ""
+        st.session_state["logged_in"] = False
+        st.experimental_rerun()
 
-            if st.button("Go back") is True:
-                st.session_state["sign_in"] = ""
-                st.experimental_rerun()
+
+def add_user():
+    config = configparser.ConfigParser()
+    config.sections()
+    config.read('user_data.stodo')
+
+    user = st.text_input("Make a username for your new account")
+
+    if user != "" and user not in config:
+        config.add_section(user)
+        config[user]["name"] = user
+        config[user]['penguin'] = "Assets/motivation_penguin.gif"
+        config[user]["tdl"] = ""
+        config[user]["tdfl"] = ""
+        config[user]["cmpl"] = ""
+        config[user]["ltcmpl"] = ""
+        config[user]['num_complete'] = "0"
+        config[user]["times_to_complete"] = ""
+        config[user]["content_planner"] = ""
+
+        st.session_state["user"] = user
+        st.session_state["penguin"] = "Assets/motivation_penguin.gif"
+        st.session_state['tdl'] = []
+        st.session_state['tdfl'] = []
+        st.session_state['cmpl'] = []
+        st.session_state['ltcmpl'] = []
+        st.session_state['num_complete'] = 0
+        st.session_state["times_to_complete"] = []
+        st.session_state["content_planner"] = []
+
+        password = st.text_input(f"Set a password for {user}", type="password")
+        st.write(
+            "do NOT use a password you care about. I beg of you, I do not want access to your passwords. DO NOT GIVE THEM TO ME.")
+        set_password = st.button("Save new password")
+
+        if set_password is True and password != "":
+            config[user]["password"] = password
+
+            with open('user_data.stodo', 'w') as configfile:
+                config.write(configfile)
+                st.session_state['logged_in'] = True
+
+            st.experimental_rerun()
+    elif user in config:
+        st.error(
+            "Looks like that username is taken! Press the sign in button to log in or choose a different username.")
+        retry_new_account = st.button(
+            f"Alright! I'll try to sign in to {user} or make a new account that isn't called {user}.")
+        if retry_new_account:
+            st.session_state["sign_in"] = ""
+            st.experimental_rerun()
+
+    if st.button("Go back") is True:
+        st.session_state["sign_in"] = ""
+        st.experimental_rerun()
+
+
+def login_attempt(user, password):
+    config = configparser.ConfigParser()
+    config.sections()
+    config.read('user_data.stodo')
+
+    try:
+        login = st.button(f"Log in to {config[user]['name']}")
+        if password == config[user]["password"] and login is True:
+            st.session_state['logged_in'] = True
+            st.session_state["user"] = config[user]["name"]
+            st.session_state["penguin"] = config[user]['penguin']
+            st.session_state['tdl'] = config[user]["tdl"].split("`")
+            st.session_state['tdfl'] = config[user]["tdfl"].split("`")
+            st.session_state['cmpl'] = config[user]["cmpl"].split("`")
+            st.session_state['ltcmpl'] = config[user]["ltcmpl"].split("`")
+            st.session_state['num_complete'] = int(config[user]["num_complete"])
+            st.session_state["times_to_complete"] = config[user]["times_to_complete"].split("`")
+            st.session_state["content_planner"] = config[user]["content_planner"].split("`")
+
+            with open('user_data.stodo', 'w') as configfile:
+                config.write(configfile)
+
+            st.experimental_rerun()
+        elif password != config[user]["password"] and password != "" and login is True:
+            st.error("Username and password do not match")
+            time.sleep(3)
+    except KeyError:
+        st.error("Looks like that username does not exist. Do you have an account? Check if you've spelled it wrong.")
 
 
 # Press the green button in the gutter to run the script.

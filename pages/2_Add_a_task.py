@@ -91,6 +91,17 @@ def main():
         st.error("Log in please")
 
 
+def add_task(task, task_type, due_date):
+    if task != "":
+        if task_type == "do now":
+            task = st.session_state["nte"] + " · " + str(time.time()) + " · " + str(due_date) + " · " + "tdl"
+            st.session_state['tdl'].append(task)
+
+        elif task_type == "do soon":
+            task = st.session_state["nte"] + " · " + str(time.time()) + " · " + str(due_date) + " · " + "tdfl"
+            st.session_state['tdfl'].append(task)
+
+
 def update_config():
     config = configparser.ConfigParser()
     config.sections()
@@ -136,17 +147,6 @@ def update_config():
 
     with open('user_data.stodo', 'w') as configfile:
         config.write(configfile)
-
-
-def add_task(task, task_type, due_date):
-    if task != "":
-        if task_type == "do now":
-            task = st.session_state["nte"] + " · " + str(time.time()) + " · " + str(due_date) + " · " + "tdl"
-            st.session_state['tdl'].append(task)
-
-        elif task_type == "do soon":
-            task = st.session_state["nte"] + " · " + str(time.time()) + " · " + str(due_date) + " · " + "tdfl"
-            st.session_state['tdfl'].append(task)
 
 
 if __name__ == '__main__':

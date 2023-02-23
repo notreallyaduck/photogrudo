@@ -117,6 +117,7 @@ def main():
                     add_subject = st.button("Add")
 
                     if add_subject is True:
+
                         for i in subjects:
                             if i.startswith(new_subject):
                                 st.error("Subject already exists")
@@ -144,6 +145,7 @@ def main():
                                 index_to_modify = st.session_state["content_planner"].index(i)
 
                         added_topics = []
+                        did_not_add = ""
 
                         for i in st.session_state["content_planner"][index_to_modify].split("*"):
                             added_topics.append(i.split("^")[0].strip())
@@ -153,10 +155,13 @@ def main():
                                 added_topics.append(i.strip())
                                 st.session_state["content_planner"][index_to_modify] += "*" + i.strip() + "^" + "🤨"
                             elif i.strip() in added_topics:
-                                st.error(f"Not adding {i}, it's already in this subject")
-                                time.sleep(1.5)
+                                did_not_add += i.strip() + " "
 
+                        if len(did_not_add) > 0:
+                            st.warning(f"Did not add {did_not_add}")
+                            time.sleep(2)
                         st.experimental_rerun()
+
                     elif new_topic[0] == "":
                         st.info("Type the topics you want to add, separate them with commas to add multiple.")
 
