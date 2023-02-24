@@ -67,26 +67,48 @@ def main():
                         topic_data = j.split("^")
                         topic_num += 1
 
-                        confidence = st.select_slider(topic_data[0],  options=["🤨", '⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'], value=topic_data[1], key=f"{subject}_{topic_num}")
+                        match topic_data[1]:
+                            case "0":
+                                saved_value = "🤨"
+                            case "1":
+                                saved_value = "⭐"
+                            case "2":
+                                saved_value = "⭐⭐"
+                            case "3":
+                                saved_value = "⭐⭐⭐"
+                            case "4":
+                                saved_value = "⭐⭐⭐⭐"
+                            case "5":
+                                saved_value = "⭐⭐⭐⭐⭐"
+                            case _:
+                                saved_value = "🤨"
+
+                        confidence = st.select_slider(topic_data[0],  options=["🤨", '⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'], value=saved_value, key=f"{subject}_{topic_num}")
 
                         if confidence == "🤨":
                             subject_average += 0
+                            confidence_to_save = "0"
                         elif confidence == "⭐":
                             subject_average += 1
+                            confidence_to_save = "1"
                         elif confidence == "⭐⭐":
                             subject_average += 2
+                            confidence_to_save = "2"
                         elif confidence == "⭐⭐⭐":
                             subject_average += 3
+                            confidence_to_save = "3"
                         elif confidence == "⭐⭐⭐⭐":
                             subject_average += 4
+                            confidence_to_save = "4"
                         elif confidence == "⭐⭐⭐⭐⭐":
                             subject_average += 5
+                            confidence_to_save = "5"
 
                         for m in strings:
                             if m.startswith(topic_data[0]):
                                 string_to_replace = strings.index(m)
                                 strings.remove(m)
-                                strings.insert(string_to_replace, f"{topic_data[0]}^{confidence}")
+                                strings.insert(string_to_replace, f"{topic_data[0]}^{confidence_to_save}")
 
                     for m in strings:
                         if st.session_state["content_planner"][index_to_modify] == "":
