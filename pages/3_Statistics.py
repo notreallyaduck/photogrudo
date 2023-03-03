@@ -11,33 +11,13 @@ def main():
         st.session_state["logged_in"] = False
 
     if st.session_state['logged_in'] is True:
+        ss_init()
+
         st.set_page_config(
             page_title="Photogrudo · Statistics · THIS PAGE IS A WORK IN PROGRESS",
             layout="centered",
             initial_sidebar_state="auto",
         )
-
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
-
-        for i in st.session_state["tdl"]:
-            if i == "":
-                st.session_state["tdl"].remove(i)
-
-        for i in st.session_state["tdfl"]:
-            if i == "":
-                st.session_state["tdfl"].remove(i)
-
-        for i in st.session_state["cmpl"]:
-            if i == "":
-                st.session_state["cmpl"].remove(i)
-
-        for i in st.session_state["ltcmpl"]:
-            if i == "":
-                st.session_state["ltcmpl"].remove(i)
-
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
 
         if st.session_state['num_complete'] == 0:
             st.title("YOU HAVE ACCOMPLISHED ABSOLUTELY NOTHING")
@@ -48,39 +28,28 @@ def main():
             st.write("what you want a pat on the back?")
 
         if st.session_state['num_complete'] >= 10:
-            st.header("Stats")
-            st.write("Average time taken to complete tasks")
+            st.header("⏱️ Average time taken to complete tasks")
 
             average_time_to_complete = 0
 
             for i in st.session_state["times_to_complete"]:
-                if i != "":  # TODO properly fix this
+                if i != "":
                     average_time_to_complete += int(i)
 
-            average_time_to_complete = average_time_to_complete/st.session_state["num_complete"]
+            st.write("On average, you take " + average(average_time_to_complete) + " to complete a task")  # Average time taken to complete tasks
+            st.write("")
 
-            if average_time_to_complete < 60:
-                average_time_to_complete = f"{round(average_time_to_complete)} seconds"
-            elif 60 < average_time_to_complete < 3600:
-                average_time_to_complete = f"{round(average_time_to_complete/60)} minutes"
-            elif 3600 < average_time_to_complete < 86400:
-                average_time_to_complete = f"{round(average_time_to_complete / 3600)} hours"
-            elif 86400 < average_time_to_complete < 604800:
-                average_time_to_complete = f"{round(average_time_to_complete / 86400)} days"
-            elif 604800 < average_time_to_complete < 2629746:
-                average_time_to_complete = f"{round(average_time_to_complete / 604800)} weeks"
-            elif 2629746 < average_time_to_complete < 31536000:
-                average_time_to_complete = f"{round(average_time_to_complete / 2629746)} months"
-            elif average_time_to_complete >= 31536000:
-                average_time_to_complete = f"{round(average_time_to_complete / 31536000)} years"
+            st.header("👍👎 Overdue/On time task ratio")
 
-            st.write(average_time_to_complete)  # Average time taken to complete tasks
+            if st.session_state["num_complete"] != st.session_state["was_overdue"]:
+                od_ot_ratio = round(st.session_state["was_overdue"]/(st.session_state["num_complete"] - st.session_state["was_overdue"]))
+                od_percent = round(st.session_state["was_overdue"]/(st.session_state["num_complete"])*100)
+                st.write(f"On average, you complete {od_ot_ratio} tasks after the due date per task completed on time.")
+                st.write(f"{od_percent}% of tasks are overdue on completion")
+                st.write(' ')
 
-            st.header("Number of tasks today")
-            st.write("0.000003 (THIS WILL BE IMPLEMENTED SOON)")  # TODO NUM TASKS TODAY, compared to yesterday, compared to today last week
-            st.header("Number of tasks completed per day")
-            st.write("-92 (THIS WILL BE IMPLEMENTED SOON)")  # TODO NUM TASKS DAILY AVERAGE, compared to last week, compared to last month
-            st.write(" ")
+            else:
+                st.write(":red[You have only ever completed tasks after the due date. What is wrong with you.]")
 
             with st.expander("All completed tasks"):
 
@@ -102,42 +71,63 @@ def main():
         else:
             st.write("Stats will appear here after you've completed a couple tasks. Keep at it.")
 
-            current_penguin = st.session_state['penguin']
+        current_penguin = st.session_state['penguin']
 
-            penguin_caption = ""
+        penguin_caption = ""
 
-            if current_penguin == "Assets/motivation_penguin.gif":
-                penguin_caption = "You got this"
-            elif current_penguin == "Assets/pessimistic_penguin.gif":
-                penguin_caption = "You don't got this"
+        if current_penguin == "Assets/motivation_penguin.gif":
+            penguin_caption = "You got this"
+        elif current_penguin == "Assets/pessimistic_penguin.gif":
+            penguin_caption = "You don't got this"
 
-            st.image(current_penguin, caption=penguin_caption, use_column_width="always")
+        st.image(current_penguin, caption=penguin_caption, use_column_width="always")
 
+        index = 0
+
+        if st.session_state['penguin'] == "Assets/motivation_penguin.gif":
             index = 0
+        elif st.session_state['penguin'] == "Assets/pessimistic_penguin.gif":
+            index = 1
 
-            if st.session_state['penguin'] == "Assets/motivation_penguin.gif":
-                index = 0
-            elif st.session_state['penguin'] == "Assets/pessimistic_penguin.gif":
-                index = 1
+        penguin = st.radio("Switch to a different penguin!", options=["Motivational Penguin", "Pessimistic Penguin"], index=index)
+        st.write("This will reflect in the incredibly motivational quotes on the overview page.")
 
-            penguin = st.radio("Switch to a different penguin!", options=["Motivational Penguin", "Pessimistic Penguin"], index=index)
+        if penguin == "Motivational Penguin":
+            st.session_state["penguin"] = "Assets/motivation_penguin.gif"
+        elif penguin == "Pessimistic Penguin":
+            st.session_state["penguin"] = "Assets/pessimistic_penguin.gif"
 
-            if penguin == "Motivational Penguin":
-                st.session_state["penguin"] = "Assets/motivation_penguin.gif"
-            elif penguin == "Pessimistic Penguin":
-                st.session_state["penguin"] = "Assets/pessimistic_penguin.gif"
-
-            if current_penguin != st.session_state['penguin']:
-                st.experimental_rerun()
+        if current_penguin != st.session_state['penguin']:
+            st.experimental_rerun()
         update_config()
     else:
         st.error("Log in please")
 
 
+def average(average_time_to_complete):
+    average_time_to_complete = average_time_to_complete / st.session_state["num_complete"]
+    if average_time_to_complete < 60:
+        average_time_to_complete = f"{round(average_time_to_complete)} second(s)"
+    elif 60 < average_time_to_complete < 3600:
+        average_time_to_complete = f"{round(average_time_to_complete / 60)} minute(s)"
+    elif 3600 < average_time_to_complete < 86400:
+        average_time_to_complete = f"{round(average_time_to_complete / 3600)} hour(s)"
+    elif 86400 < average_time_to_complete < 604800:
+        average_time_to_complete = f"{round(average_time_to_complete / 86400)} day(s)"
+    elif 604800 < average_time_to_complete < 2629746:
+        average_time_to_complete = f"{round(average_time_to_complete / 604800)} week(s)"
+    elif 2629746 < average_time_to_complete < 31536000:
+        average_time_to_complete = f"{round(average_time_to_complete / 2629746)} month(s)"
+    elif average_time_to_complete >= 31536000:
+        average_time_to_complete = f"{round(average_time_to_complete / 31536000)} year(s)"
+
+    return average_time_to_complete
+
+
 def update_config():
     config = configparser.ConfigParser()
     config.sections()
-    config.read('user_data.stodo')
+    config.read('user_data.photogrudo')
 
     user = st.session_state["user"]
 
@@ -146,7 +136,6 @@ def update_config():
     cmpl_to_update = ""
     ltcmpl_to_update = ""
     times_to_update = ""
-    content_to_update = ""
 
     for i in st.session_state['tdl']:
         if i != "":
@@ -168,23 +157,42 @@ def update_config():
         if i != "":
             times_to_update += str(i) + "`"
 
-    for i in st.session_state["content_planner"]:
-        if i != "":
-            content_to_update += i + "`"
-
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
-    # config.set(user, 'tdl', str(st.session_state["tdl"]))
     config[user]["tdfl"] = tdfl_to_update
     config[user]["cmpl"] = cmpl_to_update
     config[user]["ltcmpl"] = ltcmpl_to_update
     config[user]["num_complete"] = str(st.session_state['num_complete'])
+    config[user]["was_overdue"] = str(st.session_state['was_overdue'])
     config[user]["times_to_complete"] = times_to_update
-    config[user]["content_planner"] = content_to_update
 
-    with open('user_data.stodo', 'w') as configfile:
+    with open('user_data.photogrudo', 'w') as configfile:
         config.write(configfile)
+
+
+def ss_init():
+    if "cmpl" not in st.session_state:
+        st.session_state['cmpl'] = []
+
+    for i in st.session_state["tdl"]:
+        if i == "":
+            st.session_state["tdl"].remove(i)
+
+    for i in st.session_state["tdfl"]:
+        if i == "":
+            st.session_state["tdfl"].remove(i)
+
+    for i in st.session_state["cmpl"]:
+        if i == "":
+            st.session_state["cmpl"].remove(i)
+
+    for i in st.session_state["ltcmpl"]:
+        if i == "":
+            st.session_state["ltcmpl"].remove(i)
+
+    if "cmpl" not in st.session_state:
+        st.session_state['cmpl'] = []
 
 
 if __name__ == '__main__':

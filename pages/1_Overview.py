@@ -1,4 +1,5 @@
 import datetime
+import random
 
 import streamlit as st
 import configparser
@@ -11,33 +12,14 @@ def main():
         st.session_state["logged_in"] = False
 
     if st.session_state["logged_in"] is True:
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
-
-        for i in st.session_state["tdl"]:
-            if i == "":
-                st.session_state["tdl"].remove(i)
-
-        for i in st.session_state["tdfl"]:
-            if i == "":
-                st.session_state["tdfl"].remove(i)
-
-        for i in st.session_state["cmpl"]:
-            if i == "":
-                st.session_state["cmpl"].remove(i)
-
-        for i in st.session_state["ltcmpl"]:
-            if i == "":
-                st.session_state["ltcmpl"].remove(i)
-
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
+        ss_init()
 
         st.set_page_config(
             page_title="Photogrudo · Overview",
             layout="centered",
             initial_sidebar_state="auto",
         )
+        # Streamlit page setup
 
         complete = []
         complete_ids = []
@@ -45,7 +27,9 @@ def main():
         if st.session_state["sign_in"] == "return":
             st.title(f'Welcome back, {st.session_state["user"]}!')
         elif st.session_state["sign_in"] == "new":
-            st.title(f'Welcome to Photogrudo, {st.session_state["user"]}!')
+            st.title(f'👋 Welcome to Photogrudo, {st.session_state["user"]}!')
+
+        insert_corny_quote()
         st.write(" ")
 
         for i in st.session_state['tdl']:
@@ -54,12 +38,12 @@ def main():
                 h = j[2].split("-")
 
                 date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
-                if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
-                    st.write(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
+                if 0 < time.mktime(date_time.timetuple()) + 86400 - time.time() < 86400:
+                    due_message = "Due soon · " + j[0] + " · " + h[2] + "/" + h[1] + "/" + h[0]
+                    st.markdown(f":blue[{due_message}]")
 
         for i in st.session_state['tdfl']:
             j = i.split(" · ")
-            h = j[2].split("-")
 
             if j[2] != "No due date":
                 h = j[2].split("-")
@@ -67,7 +51,7 @@ def main():
                 if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
                     st.write(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
 
-        checkbox_function = st.radio("Checkboxes should:", options=("Mark tasks as complete", "Delete tasks"))
+        checkbox_function = st.radio("Checkboxes should:", options=("✅ Mark tasks as complete", "🗑️ Delete tasks"))
         checkbox_deletes = False
 
         if checkbox_function == "Mark tasks as complete":
@@ -86,35 +70,14 @@ def main():
             st.write("Priority Tasks")
 
             for i in st.session_state['tdl']:
-                j = i.split(" · ")
-                h = j[2].split("-")
-                if len(h) == 3:
-                    st.checkbox(f"{j[0]} · Due {h[2]}/{h[1]}/{h[0]}", key=i)
-
-                else:
-                    st.checkbox(f"{j[0]} · No due date", key=i)
-
-                if st.session_state[i] is True:
-                    complete.append(j[0])
-                    complete_ids.append(i)
-                    st.session_state["times_to_complete"].append(round(time.time()) - int(float(j[1])))
+                create_checkbox(i, complete, complete_ids)
 
         with col2:
             st.header("Do soon")
             st.write("Do at some point")
 
             for i in st.session_state['tdfl']:
-                j = i.split(" · ")
-                h = j[2].split("-")
-                if len(h) == 3:
-                    st.checkbox(f"{j[0]} · Due {h[2]}/{h[1]}/{h[0]}", key=i)
-
-                else:
-                    st.checkbox(f"{j[0]} · No due date", key=i)
-                if st.session_state[i] is True:
-                    complete.append(j[0])
-                    complete_ids.append(i)
-                    st.session_state["times_to_complete"].append(round(time.time()) - int(float(j[1])))
+                create_checkbox(i, complete, complete_ids)
 
         completed_tasks(complete_ids, checkbox_deletes)
 
@@ -132,7 +95,7 @@ def main():
                 col3.write(f"{j[0]}: {task_type}")
 
             if len(st.session_state["cmpl"]) > 0:
-                delete_tasks = st.button("Delete completed tasks")
+                delete_tasks = st.button("🗑️ Delete completed tasks")
                 if delete_tasks is True:
                     del st.session_state["cmpl"]
                     st.experimental_rerun()
@@ -174,7 +137,7 @@ def completed_tasks(keys, delete):
 def update_config():
     config = configparser.ConfigParser()
     config.sections()
-    config.read('user_data.stodo')
+    config.read('user_data.photogrudo')
 
     user = st.session_state["user"]
 
@@ -211,10 +174,117 @@ def update_config():
     config[user]["cmpl"] = cmpl_to_update
     config[user]["ltcmpl"] = ltcmpl_to_update
     config[user]["num_complete"] = str(st.session_state['num_complete'])
+    config[user]["was_overdue"] = str(st.session_state['was_overdue'])
     config[user]["times_to_complete"] = times_to_update
 
-    with open('user_data.stodo', 'w') as configfile:
+    with open('user_data.photogrudo', 'w') as configfile:
         config.write(configfile)
+
+
+def insert_corny_quote():
+    chosen_quote = random.randrange(10)
+    quote_to_display = ""
+
+    if st.session_state["penguin"] == "Assets/motivation_penguin.gif":
+        match chosen_quote:
+            case 0:
+                quote_to_display = "Age is of no importance unless you're a cheese"
+            case 1:
+                quote_to_display = "Life always gives you a second chance, its called tomorrow"
+            case 2:
+                quote_to_display = "When nothing goes right, go left"
+            case 3:
+                quote_to_display = "The road to success is always under construction"
+            case 4:
+                quote_to_display = "Go easy on yourself. Whatever you do today, let it be enough"
+            case 5:
+                quote_to_display = "Believe you can and you're halfway there"
+            case 6:
+                quote_to_display = "I believe in you"
+            case 7:
+                quote_to_display = "I know this sounds like a cat poster"
+            case 8:
+                quote_to_display = "Be like a postage stamp, stick to a thing until you get there"
+            case 9:
+                quote_to_display = "When life gives you lemons, order the lobster tail"
+    else:
+        match chosen_quote:
+            case 0:
+                quote_to_display = "It only gets worse"
+            case 1:
+                quote_to_display = "You are doing a terrible job"
+            case 2:
+                quote_to_display = "You haven't done enough"
+            case 3:
+                quote_to_display = "There are no words to describe your utter lack of productivity"
+            case 4:
+                quote_to_display = "Trying is the first step toward failure"
+            case 5:
+                quote_to_display = "Keep trying until you give up"
+            case 6:
+                quote_to_display = "Keep trying. eventually you will try"
+            case 7:
+                quote_to_display = "Only dead fish go with the flow"
+            case 8:
+                quote_to_display = "Enjoy the good times because something terrible is going to happen"
+            case 9:
+                quote_to_display = "You'll accomplish nothing today"
+
+    st.subheader('"' + quote_to_display + '"')
+
+
+def ss_init():
+    if "cmpl" not in st.session_state:
+        st.session_state['cmpl'] = []
+
+    for i in st.session_state["tdl"]:
+        if i == "":
+            st.session_state["tdl"].remove(i)
+
+    for i in st.session_state["tdfl"]:
+        if i == "":
+            st.session_state["tdfl"].remove(i)
+
+    for i in st.session_state["cmpl"]:
+        if i == "":
+            st.session_state["cmpl"].remove(i)
+
+    for i in st.session_state["ltcmpl"]:
+        if i == "":
+            st.session_state["ltcmpl"].remove(i)
+
+    for i in st.session_state["content_planner"]:
+        if i == "":
+            st.session_state["content_planner"].remove(i)
+
+    if "cmpl" not in st.session_state:
+        st.session_state['cmpl'] = []
+
+
+def create_checkbox(task, complete, complete_ids):
+    j = task.split(" · ")
+    h = j[2].split("-")
+    overdue = False
+
+    if j[2] != "No due date":
+        date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
+        if time.mktime(date_time.timetuple()) - time.time() + 86400 < 0:
+            overdue = True
+
+    if len(h) == 3:
+        st.checkbox(f"{j[0]} · Due {h[2]}/{h[1]}/{h[0]}", key=task)
+        if overdue:
+            st.write(":red[This task is overdue ^]")
+    else:
+        st.checkbox(f"{j[0]} · No due date", key=task)
+
+    if st.session_state[task] is True:
+        if overdue:
+            st.session_state["was_overdue"] += 1
+
+        complete.append(j[0])
+        complete_ids.append(task)
+        st.session_state["times_to_complete"].append(round(time.time()) - int(float(j[1])))
 
 
 # Press the green button in the gutter to run the script.

@@ -18,6 +18,8 @@ def main():
     if "sign_in" not in st.session_state:
         st.session_state["sign_in"] = ""
 
+    # print page title and subheading
+
     st.title("Photogrudo")
     st.write("photo-gru-doo")
 
@@ -27,8 +29,10 @@ def main():
     else:
         if st.session_state["sign_in"] == "":
 
-            new_user = st.button("Make an account!")
-            returning_user = st.button("Sign in")
+            # Create log in page with buttons
+
+            new_user = st.button("👤 Make an account!")
+            returning_user = st.button("🔐 Sign in")
 
             if new_user is True:
                 st.session_state["sign_in"] = "new"
@@ -37,36 +41,34 @@ def main():
                 st.session_state["sign_in"] = "return"
                 st.experimental_rerun()
 
+        # Show page for returning users
+
         if st.session_state["sign_in"] == "return":
-            user = st.text_input("Username")
-            password = st.text_input("Password", type="password")
+            user = st.text_input("👤 Username")
+            password = st.text_input("🔑 Password", type="password")
 
             if user != "":
                 login_attempt(user, password)
 
-            if st.button("Go back") is True:
+            if st.button("⏮️ Go back") is True:
                 st.session_state["sign_in"] = ""
                 st.experimental_rerun()
 
+        # show page for new users
         elif st.session_state["sign_in"] == "new":
             add_user()
 
 
 def successful_login():
+    # Display page to show with successful login
+
     st.header("Hey!")
 
     st.write(f"You're logged in as {st.session_state['user']}")
     st.write(
         "Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
 
-    st.write(" ")
-    st.write(" ")
-
-    st.header("Photogrudo got some updates")
-    st.write(
-        "Check out the photogrudo content tracker, a simple way to visualise your understanding and progression through a subject.")
-
-    if st.button("Logout") is True:
+    if st.button("🔐 Logout") is True:
         st.session_state["sign_in"] = ""
         st.session_state["logged_in"] = False
         st.experimental_rerun()
@@ -75,10 +77,11 @@ def successful_login():
 def add_user():
     config = configparser.ConfigParser()
     config.sections()
-    config.read('user_data.stodo')
+    config.read('user_data.photogrudo')
 
     user = st.text_input("Make a username for your new account")
 
+    # First time initialisation of session state and config key for new user
     if user != "" and user not in config:
         config.add_section(user)
         config[user]["name"] = user
@@ -90,6 +93,7 @@ def add_user():
         config[user]['num_complete'] = "0"
         config[user]["times_to_complete"] = ""
         config[user]["content_planner"] = ""
+        config[user]["was_overdue"] = ""
 
         st.session_state["user"] = user
         st.session_state["penguin"] = "Assets/motivation_penguin.gif"
@@ -100,8 +104,11 @@ def add_user():
         st.session_state['num_complete'] = 0
         st.session_state["times_to_complete"] = []
         st.session_state["content_planner"] = []
+        st.session_state["was_overdue"] = 0
 
         password = st.text_input(f"Set a password for {user}", type="password")
+        # display password entry field if username does not exist already and field is not blank
+
         st.write(
             "do NOT use a password you care about. I beg of you, I do not want access to your passwords. DO NOT GIVE THEM TO ME.")
         set_password = st.button("Save new password")
@@ -109,21 +116,22 @@ def add_user():
         if set_password is True and password != "":
             config[user]["password"] = password
 
-            with open('user_data.stodo', 'w') as configfile:
+            # update config file for new users
+            with open('user_data.photogrudo', 'w') as configfile:
                 config.write(configfile)
                 st.session_state['logged_in'] = True
 
             st.experimental_rerun()
-    elif user in config:
+    elif user in config: # display error message for username taken
         st.error(
             "Looks like that username is taken! Press the sign in button to log in or choose a different username.")
         retry_new_account = st.button(
-            f"Alright! I'll try to sign in to {user} or make a new account that isn't called {user}.")
+            f"⏮️ Alright! I'll try to sign in to {user} or make a new account that isn't called {user}.")
         if retry_new_account:
             st.session_state["sign_in"] = ""
             st.experimental_rerun()
 
-    if st.button("Go back") is True:
+    if st.button("⏮️ Go back") is True:
         st.session_state["sign_in"] = ""
         st.experimental_rerun()
 
@@ -131,10 +139,12 @@ def add_user():
 def login_attempt(user, password):
     config = configparser.ConfigParser()
     config.sections()
-    config.read('user_data.stodo')
+    config.read('user_data.photogrudo')
 
     try:
-        login = st.button(f"Log in to {config[user]['name']}")
+        # load session state with information from relevant fields in config file
+
+        login = st.button(f"🔓 Log in to {config[user]['name']}")
         if password == config[user]["password"] and login is True:
             st.session_state['logged_in'] = True
             st.session_state["user"] = config[user]["name"]
@@ -146,8 +156,10 @@ def login_attempt(user, password):
             st.session_state['num_complete'] = int(config[user]["num_complete"])
             st.session_state["times_to_complete"] = config[user]["times_to_complete"].split("`")
             st.session_state["content_planner"] = config[user]["content_planner"].split("`")
+            st.session_state['was_overdue'] = int(config[user]["was_overdue"])
 
-            with open('user_data.stodo', 'w') as configfile:
+            # update config file for returning users
+            with open('user_data.photogrudo', 'w') as configfile:
                 config.write(configfile)
 
             st.experimental_rerun()

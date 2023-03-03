@@ -8,45 +8,25 @@ def main():
         st.session_state["logged_in"] = False
 
     if st.session_state['logged_in'] is True:
+        ss_init()
+
         st.set_page_config(
             page_title="Photogrudo · Add Task",
             layout="centered",
             initial_sidebar_state="auto",
         )
 
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
-
-        for i in st.session_state["tdl"]:
-            if i == "":
-                st.session_state["tdl"].remove(i)
-
-        for i in st.session_state["tdfl"]:
-            if i == "":
-                st.session_state["tdfl"].remove(i)
-
-        for i in st.session_state["cmpl"]:
-            if i == "":
-                st.session_state["cmpl"].remove(i)
-
-        for i in st.session_state["ltcmpl"]:
-            if i == "":
-                st.session_state["ltcmpl"].remove(i)
-
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
-
         st.title("Add a task")
 
         add_type = ""
 
         st.write(f"You currently have {len(st.session_state['tdl'])} priority and {len(st.session_state['tdfl'])} do soon tasks")
-        new_task = st.text_input("Enter Task", key="nte", value="").strip()
+        new_task = st.text_input("📝 Enter Task", key="nte", value="").strip()
 
-        # add_type = st.selectbox('What type of task is this?', ('Select a type', 'Priority', 'Do soon'), key="select_type")
         st.write("What type of task is this?")
-        add_priority = st.checkbox("Do now")
-        add_some_point = st.checkbox("Do soon")
+
+        add_priority = st.checkbox("❗️❗️Do now")
+        add_some_point = st.checkbox("❗️ Do soon")
 
         if add_priority is True and add_some_point is False:
             add_type = "do now"
@@ -57,15 +37,16 @@ def main():
         elif add_some_point is True and add_priority is True:
             add_type = "both selected"
 
-        due = st.radio("Is this task due?", options=("Task is due", "Task is not due"), label_visibility="collapsed")
-        show_date = True
+        st.write("")
+
+        due = st.radio("📅 Is this task due?", options=("Task is due", "Task is not due"))
         due_date = "No due date"
 
         if due == "Task is due":
             due_date = st.date_input("Date due")
 
         if new_task and add_type != "" and add_type != "both selected":
-            add_button = st.button(f'Add "{new_task}" to: {add_type} tasks')
+            add_button = st.button(f'✅ Add "{new_task}" to: {add_type} tasks')
 
             if add_button is True:
                 add_task(new_task, add_type, due_date)
@@ -102,10 +83,38 @@ def add_task(task, task_type, due_date):
             st.session_state['tdfl'].append(task)
 
 
+def ss_init():
+    if "cmpl" not in st.session_state:
+        st.session_state['cmpl'] = []
+
+    for i in st.session_state["tdl"]:
+        if i == "":
+            st.session_state["tdl"].remove(i)
+
+    for i in st.session_state["tdfl"]:
+        if i == "":
+            st.session_state["tdfl"].remove(i)
+
+    for i in st.session_state["cmpl"]:
+        if i == "":
+            st.session_state["cmpl"].remove(i)
+
+    for i in st.session_state["ltcmpl"]:
+        if i == "":
+            st.session_state["ltcmpl"].remove(i)
+
+    for i in st.session_state["content_planner"]:
+        if i == "":
+            st.session_state["content_planner"].remove(i)
+
+    if "cmpl" not in st.session_state:
+        st.session_state['cmpl'] = []
+
+
 def update_config():
     config = configparser.ConfigParser()
     config.sections()
-    config.read('user_data.stodo')
+    config.read('user_data.photogrudo')
 
     user = st.session_state["user"]
 
@@ -131,6 +140,10 @@ def update_config():
         if i != "":
             ltcmpl_to_update += i + "`"
 
+    for i in st.session_state["content_planner"]:
+        if i == "":
+            st.session_state["content_planner"].remove(i)
+
     for i in st.session_state["times_to_complete"]:
         if i != "":
             times_to_update += str(i) + "`"
@@ -138,14 +151,14 @@ def update_config():
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
-    # config.set(user, 'tdl', str(st.session_state["tdl"]))
     config[user]["tdfl"] = tdfl_to_update
     config[user]["cmpl"] = cmpl_to_update
     config[user]["ltcmpl"] = ltcmpl_to_update
     config[user]["num_complete"] = str(st.session_state['num_complete'])
+    config[user]["was_overdue"] = str(st.session_state['was_overdue'])
     config[user]["times_to_complete"] = times_to_update
 
-    with open('user_data.stodo', 'w') as configfile:
+    with open('user_data.photogrudo', 'w') as configfile:
         config.write(configfile)
 
 

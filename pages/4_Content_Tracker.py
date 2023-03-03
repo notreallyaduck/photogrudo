@@ -10,37 +10,12 @@ def main():
         st.session_state["logged_in"] = False
 
     if st.session_state["logged_in"] is True:
+        ss_init()
         st.set_page_config(
             page_title="Photogrudo · Content Tracker",
             layout="centered",
             initial_sidebar_state="auto",
         )
-
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
-
-        for i in st.session_state["tdl"]:
-            if i == "":
-                st.session_state["tdl"].remove(i)
-
-        for i in st.session_state["tdfl"]:
-            if i == "":
-                st.session_state["tdfl"].remove(i)
-
-        for i in st.session_state["cmpl"]:
-            if i == "":
-                st.session_state["cmpl"].remove(i)
-
-        for i in st.session_state["ltcmpl"]:
-            if i == "":
-                st.session_state["ltcmpl"].remove(i)
-
-        for i in st.session_state["content_planner"]:
-            if i == "":
-                st.session_state["content_planner"].remove(i)
-
-        if "cmpl" not in st.session_state:
-            st.session_state['cmpl'] = []
 
         st.title("The photogrudo content tracker")
         st.write("Use this page to track progression through all your courses")
@@ -116,9 +91,10 @@ def main():
                         else:
                             st.session_state["content_planner"][index_to_modify] = st.session_state["content_planner"][index_to_modify] + "*" + m
 
-
                     if topic_num > 0:
                         subject_average = subject_average/topic_num
+
+                        st.progress(int(subject_average/5*100))
 
                         if subject_average == 5:
                             st.write("Congratulations, you're at 100 percent understanding of this subject")
@@ -212,7 +188,7 @@ def main():
 def update_config():
     config = configparser.ConfigParser()
     config.sections()
-    config.read('user_data.stodo')
+    config.read('user_data.photogrudo')
 
     user = st.session_state["user"]
 
@@ -221,7 +197,6 @@ def update_config():
     cmpl_to_update = ""
     ltcmpl_to_update = ""
     times_to_update = ""
-    content_to_update = ""
 
     for i in st.session_state['tdl']:
         if i != "":
@@ -243,23 +218,46 @@ def update_config():
         if i != "":
             times_to_update += str(i) + "`"
 
-    for i in st.session_state["content_planner"]:
-        if i != "":
-            content_to_update += i + "`"
-
     config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
-    # config.set(user, 'tdl', str(st.session_state["tdl"]))
     config[user]["tdfl"] = tdfl_to_update
     config[user]["cmpl"] = cmpl_to_update
     config[user]["ltcmpl"] = ltcmpl_to_update
     config[user]["num_complete"] = str(st.session_state['num_complete'])
+    config[user]["was_overdue"] = str(st.session_state['was_overdue'])
     config[user]["times_to_complete"] = times_to_update
-    config[user]["content_planner"] = content_to_update
 
-    with open('user_data.stodo', 'w') as configfile:
+    with open('user_data.photogrudo', 'w') as configfile:
         config.write(configfile)
+
+
+def ss_init():
+    if "cmpl" not in st.session_state:
+        st.session_state['cmpl'] = []
+
+    for i in st.session_state["tdl"]:
+        if i == "":
+            st.session_state["tdl"].remove(i)
+
+    for i in st.session_state["tdfl"]:
+        if i == "":
+            st.session_state["tdfl"].remove(i)
+
+    for i in st.session_state["cmpl"]:
+        if i == "":
+            st.session_state["cmpl"].remove(i)
+
+    for i in st.session_state["ltcmpl"]:
+        if i == "":
+            st.session_state["ltcmpl"].remove(i)
+
+    for i in st.session_state["content_planner"]:
+        if i == "":
+            st.session_state["content_planner"].remove(i)
+
+    if "cmpl" not in st.session_state:
+        st.session_state['cmpl'] = []
 
 
 if __name__ == '__main__':
