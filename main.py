@@ -10,6 +10,8 @@ def main():
 
     os.system('START /B start_server.vbs')
 
+    time.sleep(2)
+
     sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
     cef.Initialize()
     cef.CreateBrowserSync(url="http://localhost:8501", window_title="Photogrudo")
