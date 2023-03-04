@@ -42,21 +42,20 @@ def main():
                         topic_data = j.split("^")
                         topic_num += 1
 
-                        match topic_data[1]:
-                            case "0":
-                                saved_value = "🤨"
-                            case "1":
-                                saved_value = "⭐"
-                            case "2":
-                                saved_value = "⭐⭐"
-                            case "3":
-                                saved_value = "⭐⭐⭐"
-                            case "4":
-                                saved_value = "⭐⭐⭐⭐"
-                            case "5":
-                                saved_value = "⭐⭐⭐⭐⭐"
-                            case _:
-                                saved_value = "🤨"
+                        if topic_data[1] == "0":
+                            saved_value = "🤨"
+                        elif topic_data[1] == "1":
+                            saved_value = "⭐"
+                        elif topic_data[1] == "2":
+                            saved_value = "⭐⭐"
+                        elif topic_data[1] == "3":
+                            saved_value = "⭐⭐⭐"
+                        elif topic_data[1] == "4":
+                            saved_value = "⭐⭐⭐⭐"
+                        elif topic_data[1] == "5":
+                            saved_value = "⭐⭐⭐⭐⭐"
+                        else:
+                            saved_value = "🤨"
 
                         confidence = st.select_slider(topic_data[0],  options=["🤨", '⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'], value=saved_value, key=f"{subject}_{topic_num}")
 

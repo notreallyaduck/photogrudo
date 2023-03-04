@@ -6,7 +6,9 @@ import os
 
 
 def main():
-    os.system("streamlit run 0_Hello_There.py --server.headless True --server.port 8502")
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    
+    os.system("streamlit run ./0_Hello_There.py --server.headless True --server.port 8502")
 
     time.sleep(2)
 
