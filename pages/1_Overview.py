@@ -186,47 +186,47 @@ def insert_corny_quote():
     quote_to_display = ""
 
     if st.session_state["penguin"] == "Assets/motivation_penguin.gif":
-        if chosen_quote is 0:
+        if chosen_quote == 0:
             quote_to_display = "Age is of no importance unless you're a cheese"
-        elif chosen_quote is 1:
+        elif chosen_quote == 1:
             quote_to_display = "Life always gives you a second chance, its called tomorrow"
-        elif chosen_quote is 2:
+        elif chosen_quote == 2:
             quote_to_display = "When nothing goes right, go left"
-        elif chosen_quote is 3:
+        elif chosen_quote == 3:
             quote_to_display = "The road to success is always under construction"
-        elif chosen_quote is 4:
+        elif chosen_quote == 4:
             quote_to_display = "Go easy on yourself. Whatever you do today, let it be enough"
-        elif chosen_quote is 5:
+        elif chosen_quote == 5:
             quote_to_display = "Believe you can and you're halfway there"
-        elif chosen_quote is 6:
+        elif chosen_quote == 6:
             quote_to_display = "I believe in you"
-        elif chosen_quote is 7:
+        elif chosen_quote == 7:
             quote_to_display = "I know this sounds like a cat poster"
-        elif chosen_quote is 8:
+        elif chosen_quote == 8:
             quote_to_display = "Be like a postage stamp, stick to a thing until you get there"
-        elif chosen_quote is 9:
+        elif chosen_quote == 9:
             quote_to_display = "When life gives you lemons, order the lobster tail"
 
     else:
-        if chosen_quote is 0:
+        if chosen_quote == 0:
             quote_to_display = "It only gets worse"
-        elif chosen_quote is 1:
+        elif chosen_quote == 1:
             quote_to_display = "You are doing a terrible job"
-        elif chosen_quote is 2:
+        elif chosen_quote == 2:
             quote_to_display = "You haven't done enough"
-        elif chosen_quote is 3:
+        elif chosen_quote == 3:
             quote_to_display = "There are no words to describe your utter lack of productivity"
-        elif chosen_quote is 4:
+        elif chosen_quote == 4:
             quote_to_display = "Trying is the first step toward failure"
-        elif chosen_quote is 5:
+        elif chosen_quote == 5:
             quote_to_display = "Keep trying until you give up"
-        elif chosen_quote is 6:
+        elif chosen_quote == 6:
             quote_to_display = "Keep trying. eventually you will try"
-        elif chosen_quote is 7:
+        elif chosen_quote == 7:
             quote_to_display = "Only dead fish go with the flow"
-        elif chosen_quote is 8:
+        elif chosen_quote == 8:
             quote_to_display = "Enjoy the good times because something terrible is going to happen"
-        elif chosen_quote is 9:
+        elif chosen_quote == 9:
             quote_to_display = "You'll accomplish nothing today"
 
     st.subheader('"' + quote_to_display + '"')

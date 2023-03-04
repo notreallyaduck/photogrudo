@@ -7,14 +7,12 @@ import os
 
 def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    
-    os.system("streamlit run ./0_Hello_There.py --server.headless True --server.port 8502")
 
-    time.sleep(2)
+    os.system('START /B start_server.vbs')
 
     sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
     cef.Initialize()
-    cef.CreateBrowserSync(url="http://localhost:8502", window_title="Photogrudo")
+    cef.CreateBrowserSync(url="http://localhost:8501", window_title="Photogrudo")
     cef.MessageLoop()
 
 
