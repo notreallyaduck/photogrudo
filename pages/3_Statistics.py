@@ -42,7 +42,7 @@ def main():
             st.header("👍👎 Overdue/On time task ratio")
 
             if st.session_state["num_complete"] != st.session_state["was_overdue"]:
-                od_ot_ratio = round(st.session_state["was_overdue"]/(st.session_state["num_complete"] - st.session_state["was_overdue"]))
+                od_ot_ratio = round(st.session_state["was_overdue"]/(st.session_state["num_complete"] - st.session_state["was_overdue"]), 2)
                 od_percent = round(st.session_state["was_overdue"]/(st.session_state["num_complete"])*100)
                 st.write(f"On average, you complete {od_ot_ratio} tasks after the due date per task completed on time.")
                 st.write(f"{od_percent}% of tasks are overdue on completion")
