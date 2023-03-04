@@ -186,49 +186,48 @@ def insert_corny_quote():
     quote_to_display = ""
 
     if st.session_state["penguin"] == "Assets/motivation_penguin.gif":
-        match chosen_quote:
-            case 0:
-                quote_to_display = "Age is of no importance unless you're a cheese"
-            case 1:
-                quote_to_display = "Life always gives you a second chance, its called tomorrow"
-            case 2:
-                quote_to_display = "When nothing goes right, go left"
-            case 3:
-                quote_to_display = "The road to success is always under construction"
-            case 4:
-                quote_to_display = "Go easy on yourself. Whatever you do today, let it be enough"
-            case 5:
-                quote_to_display = "Believe you can and you're halfway there"
-            case 6:
-                quote_to_display = "I believe in you"
-            case 7:
-                quote_to_display = "I know this sounds like a cat poster"
-            case 8:
-                quote_to_display = "Be like a postage stamp, stick to a thing until you get there"
-            case 9:
-                quote_to_display = "When life gives you lemons, order the lobster tail"
+        if chosen_quote is 0:
+            quote_to_display = "Age is of no importance unless you're a cheese"
+        elif chosen_quote is 1:
+            quote_to_display = "Life always gives you a second chance, its called tomorrow"
+        elif chosen_quote is 2:
+            quote_to_display = "When nothing goes right, go left"
+        elif chosen_quote is 3:
+            quote_to_display = "The road to success is always under construction"
+        elif chosen_quote is 4:
+            quote_to_display = "Go easy on yourself. Whatever you do today, let it be enough"
+        elif chosen_quote is 5:
+            quote_to_display = "Believe you can and you're halfway there"
+        elif chosen_quote is 6:
+            quote_to_display = "I believe in you"
+        elif chosen_quote is 7:
+            quote_to_display = "I know this sounds like a cat poster"
+        elif chosen_quote is 8:
+            quote_to_display = "Be like a postage stamp, stick to a thing until you get there"
+        elif chosen_quote is 9:
+            quote_to_display = "When life gives you lemons, order the lobster tail"
+
     else:
-        match chosen_quote:
-            case 0:
-                quote_to_display = "It only gets worse"
-            case 1:
-                quote_to_display = "You are doing a terrible job"
-            case 2:
-                quote_to_display = "You haven't done enough"
-            case 3:
-                quote_to_display = "There are no words to describe your utter lack of productivity"
-            case 4:
-                quote_to_display = "Trying is the first step toward failure"
-            case 5:
-                quote_to_display = "Keep trying until you give up"
-            case 6:
-                quote_to_display = "Keep trying. eventually you will try"
-            case 7:
-                quote_to_display = "Only dead fish go with the flow"
-            case 8:
-                quote_to_display = "Enjoy the good times because something terrible is going to happen"
-            case 9:
-                quote_to_display = "You'll accomplish nothing today"
+        if chosen_quote is 0:
+            quote_to_display = "It only gets worse"
+        elif chosen_quote is 1:
+            quote_to_display = "You are doing a terrible job"
+        elif chosen_quote is 2:
+            quote_to_display = "You haven't done enough"
+        elif chosen_quote is 3:
+            quote_to_display = "There are no words to describe your utter lack of productivity"
+        elif chosen_quote is 4:
+            quote_to_display = "Trying is the first step toward failure"
+        elif chosen_quote is 5:
+            quote_to_display = "Keep trying until you give up"
+        elif chosen_quote is 6:
+            quote_to_display = "Keep trying. eventually you will try"
+        elif chosen_quote is 7:
+            quote_to_display = "Only dead fish go with the flow"
+        elif chosen_quote is 8:
+            quote_to_display = "Enjoy the good times because something terrible is going to happen"
+        elif chosen_quote is 9:
+            quote_to_display = "You'll accomplish nothing today"
 
     st.subheader('"' + quote_to_display + '"')
 
