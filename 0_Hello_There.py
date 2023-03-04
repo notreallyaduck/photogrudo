@@ -109,8 +109,7 @@ def add_user():
         password = st.text_input(f"Set a password for {user}", type="password")
         # display password entry field if username does not exist already and field is not blank
 
-        st.write(
-            "do NOT use a password you care about. I beg of you, I do not want access to your passwords. DO NOT GIVE THEM TO ME.")
+        st.write("Avoid using a password you've used before.")
         set_password = st.button("Save new password")
 
         if set_password is True and password != "":
@@ -167,7 +166,7 @@ def login_attempt(user, password):
             st.error("Username and password do not match")
             time.sleep(3)
     except KeyError:
-        st.error("Looks like that username does not exist. Do you have an account? Check if you've spelled it wrong.")
+        st.error("Looks like that username does not exist. Do you have an account? Check if you've spelled your name wrong.")
 
 
 # Press the green button in the gutter to run the script.
