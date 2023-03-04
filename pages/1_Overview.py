@@ -52,11 +52,11 @@ def main():
                     st.write(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
 
         checkbox_function = st.radio("Checkboxes should:", options=("✅ Mark tasks as complete", "🗑️ Delete tasks"))
-        checkbox_deletes = False
+        checkbox_deletes = True
 
-        if checkbox_function == "Mark tasks as complete":
+        if checkbox_function == "✅ Mark tasks as complete":
             checkbox_deletes = False
-        elif checkbox_function == "Delete tasks":
+        elif checkbox_function == "🗑️ Delete tasks":
             checkbox_deletes = True
 
         col1, col2, col3 = st.columns(3)
