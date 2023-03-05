@@ -3,10 +3,18 @@ import time
 
 from cefpython3 import cefpython as cef
 import os
+import shutil
 
 
 def main():
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(current_dir)
+    code_dir = current_dir + "/src"
+
+    if not os.path.exists("%AppData%/Photogrudo"):
+        shutil.copytree(code_dir, "%AppData%/Photogrudo")
+
+    os.chdir("%AppData%/Photogrudo")
 
     os.system('START /B start_server.vbs')
 
