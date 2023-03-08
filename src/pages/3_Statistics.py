@@ -1,4 +1,3 @@
-import datetime
 import time
 
 import streamlit as st
@@ -137,7 +136,6 @@ def update_config():
 
     config[user]['penguin'] = st.session_state["penguin"]
     config[user]["ltcmpl"] = ltcmpl_to_update
-
 
     with open('user_data.photogrudo', 'w') as configfile:
         config.write(configfile)
