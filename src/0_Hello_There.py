@@ -124,7 +124,7 @@ def add_user():
                 st.session_state['logged_in'] = True
 
             st.experimental_rerun()
-    elif user in config: # display error message for username taken
+    elif user in config:  # display error message for username taken
         st.error(
             "Looks like that username is taken! Press the sign in button to log in or choose a different username.")
         retry_new_account = st.button(
@@ -218,6 +218,8 @@ def name_change():
             else:
                 st.success("Successfully changed your name")
             st.session_state["just_changed_name"] = False
+        elif password != config[user]["password"]:
+            st.error("Double check your password.")
 
 
 # Press the green button in the gutter to run the script.

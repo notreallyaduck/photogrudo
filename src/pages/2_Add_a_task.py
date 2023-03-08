@@ -7,6 +7,7 @@ def main():
     if "logged_in" not in st.session_state:
         st.session_state["logged_in"] = False
 
+    # check to see if user is logged in
     if st.session_state['logged_in'] is True:
         ss_init()
 
@@ -20,7 +21,9 @@ def main():
 
         add_type = ""
 
-        st.write(f"You currently have {len(st.session_state['tdl'])} priority and {len(st.session_state['tdfl'])} do soon tasks")
+        # Task information
+        st.write(f"You currently have {len(st.session_state['tdl'])} priority and {len(st.session_state['tdfl'])} do "
+                 f"soon tasks")
         new_task = st.text_input("📝 Enter Task", key="nte", value="").strip()
 
         st.write("What type of task is this?")
@@ -49,11 +52,13 @@ def main():
             add_button = st.button(f'✅ Add "{new_task}" to: {add_type} tasks')
 
             if add_button is True:
+                # Add the task by calling the add_task function and display a success message
                 add_task(new_task, add_type, due_date)
                 st.success(f"Successfully added {new_task}.")
                 time.sleep(1)
                 st.experimental_rerun()
 
+        # Range of error messages describing what the user needs to do to add a task properly
         elif add_type == "" and not new_task:
             st.info("Type the name of your task and select the type of task you want to add")
 
@@ -73,6 +78,7 @@ def main():
 
 
 def add_task(task, task_type, due_date):
+    # Add task to session state to update config and display on overview page with necessary information
     if task != "":
         if task_type == "do now":
             task = st.session_state["nte"] + " · " + str(time.time()) + " · " + str(due_date) + " · " + "tdl"
@@ -94,6 +100,8 @@ def ss_init():
 
 
 def update_config():
+    # Update config file by saving all relevant sessionstate data to user_data.photogrudo
+
     config = configparser.ConfigParser()
     config.sections()
     config.read('user_data.photogrudo')

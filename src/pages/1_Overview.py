@@ -32,6 +32,7 @@ def main():
         insert_corny_quote()
         st.write(" ")
 
+        # display messages for tasks due soon on do now
         for i in st.session_state['tdl']:
             j = i.split(" · ")
             if j[2] != "No due date":
@@ -42,6 +43,7 @@ def main():
                     due_message = "Due soon · " + j[0] + " · " + h[2] + "/" + h[1] + "/" + h[0]
                     st.markdown(f":blue[{due_message}]")
 
+        # display messages for tasks due soon on do soon
         for i in st.session_state['tdfl']:
             j = i.split(" · ")
 
@@ -51,6 +53,7 @@ def main():
                 if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
                     st.write(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
 
+        # display checkbox to change list checkbox function
         checkbox_function = st.radio("Checkboxes should:", options=("✅ Mark tasks as complete", "🗑️ Delete tasks"))
         checkbox_deletes = True
 
@@ -61,10 +64,12 @@ def main():
 
         col1, col2, col3 = st.columns(3)
 
+        # display list of completed tasks in column 3
         with col3:
             st.header("Done")
             st.write("Completed tasks")
 
+        # create checkboxes of current priortiy tasks in column one
         with col1:
             st.header("Do now")
             st.write("Priority Tasks")
@@ -72,6 +77,7 @@ def main():
             for i in st.session_state['tdl']:
                 create_checkbox(i, complete, complete_ids)
 
+        # create checkboxes of current do soon tasks in column 2
         with col2:
             st.header("Do soon")
             st.write("Do at some point")
@@ -79,9 +85,11 @@ def main():
             for i in st.session_state['tdfl']:
                 create_checkbox(i, complete, complete_ids)
 
+        # pass checkbox states to function to edit session state and config file
         completed_tasks(complete_ids, checkbox_deletes)
 
         with col3:
+            # deconstruct strings to extract information
             for i in st.session_state["cmpl"]:
                 j = i.split(" · ")
 
@@ -135,6 +143,8 @@ def completed_tasks(keys, delete):
 
 
 def update_config():
+    # Update config file by saving all relevant sessionstate data to user_data.photogrudo
+
     config = configparser.ConfigParser()
     config.sections()
     config.read('user_data.photogrudo')
@@ -182,6 +192,8 @@ def update_config():
 def insert_corny_quote():
     chosen_quote = random.randrange(10)
     quote_to_display = ""
+
+    # Select a quote at random out of 10 depending on whether the user has chosen to be pessimistic or optimistic
 
     if st.session_state["penguin"] == "Assets/motivation_penguin.gif":
         if chosen_quote == 0:
@@ -231,6 +243,7 @@ def insert_corny_quote():
 
 
 def ss_init():
+    # Initialise session state variables by removing phantom items
     if "cmpl" not in st.session_state:
         st.session_state['cmpl'] = []
 
@@ -259,6 +272,9 @@ def ss_init():
 
 
 def create_checkbox(task, complete, complete_ids):
+    # Create checkboxes, check if they are overdue by deconstructing the date embedded into the string of each task
+    # and display a message. If completed, move to completed tasks list and add the time taken to complete to
+    # sessionstate.
     j = task.split(" · ")
     h = j[2].split("-")
     overdue = False

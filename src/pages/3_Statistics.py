@@ -17,6 +17,7 @@ def main():
             initial_sidebar_state="auto",
         )
 
+        # Display title message depending on the number of tasks completed
         if st.session_state['num_complete'] == 0:
             st.title("YOU HAVE ACCOMPLISHED ABSOLUTELY NOTHING")
         elif st.session_state['num_complete'] == 1:
@@ -28,17 +29,21 @@ def main():
         if st.session_state['num_complete'] >= 10:
             st.header("⏱️ Average time taken to complete tasks")
 
+            # Calculate average time for completion and display
             average_time_to_complete = 0
 
             for i in st.session_state["times_to_complete"]:
                 if i != "":
                     average_time_to_complete += int(i)
 
-            st.write("On average, you take " + average(average_time_to_complete) + " to complete a task")  # Average time taken to complete tasks
+            st.write("On average, you take " + average(average_time_to_complete) + " to complete a task")  # Average
+            # time taken to complete tasks
             st.write("")
 
             st.header("👍👎 Overdue/On time task ratio")
 
+            # If there is at least one task completed on time, calculate ratio of overdue to due tasks, else show a
+            # different message
             if st.session_state["num_complete"] != st.session_state["was_overdue"]:
                 od_ot_ratio = round(st.session_state["was_overdue"]/(st.session_state["num_complete"] - st.session_state["was_overdue"]), 2)
                 od_percent = round(st.session_state["was_overdue"]/(st.session_state["num_complete"])*100)
@@ -49,6 +54,7 @@ def main():
             else:
                 st.write(":red[You have only ever completed tasks after the due date. What is wrong with you.]")
 
+            # display a list of completed tasks with due dates and age of task
             with st.expander("All completed tasks"):
 
                 for i in st.session_state["ltcmpl"]:
@@ -69,6 +75,8 @@ def main():
         else:
             st.write("Stats will appear here after you've completed a couple tasks. Keep at it.")
 
+        # Display penguin based on saved user preferences, defaults to motivational penguin because we could all use
+        # some motivation in life
         current_penguin = st.session_state['penguin']
 
         penguin_caption = ""
@@ -103,6 +111,7 @@ def main():
 
 
 def average(average_time_to_complete):
+    # calculate and return average time to complete tasks 
     average_time_to_complete = average_time_to_complete / st.session_state["num_complete"]
     if average_time_to_complete < 60:
         average_time_to_complete = f"{round(average_time_to_complete)} second(s)"
@@ -123,6 +132,8 @@ def average(average_time_to_complete):
 
 
 def update_config():
+    # Update config file by saving all relevant sessionstate data to user_data.photogrudo
+
     config = configparser.ConfigParser()
     config.sections()
     config.read('user_data.photogrudo')

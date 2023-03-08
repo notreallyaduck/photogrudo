@@ -8,17 +8,23 @@ def instructions():
     with st.expander("Instructions"):
         st.subheader("Content planner? Huh?")
         st.write("Congrats! You've made it this far")
-        st.write('Now, you may be thinking something along the lines of "How on earth am I supposed to use this in a way that benefits me without feeling like I am constantly being judged by this vast array of condescending 🤨 emojis?"')
+        st.write('Now, you may be thinking something along the lines of "How on earth am I supposed to use this in a '
+                 'way that benefits me without feeling like I am constantly being judged by this vast array of '
+                 'condescending 🤨 emojis?"')
         st.write("Well, you're definitely reading the right thing")
         st.subheader("Using the planner")
         st.write('Add any additional subjects you might have using the "Add to the planner" section above')
-        st.write("After that, add topics that are part of each subject (textbook chapter titles are a great place to start)")
-        st.write("As you progress through the year, ask yourself questions about how comfortable you are with each topic")
+        st.write("After that, add topics that are part of each subject (textbook chapter titles are a great place to "
+                 "start)")
+        st.write("As you progress through the year, ask yourself questions about how comfortable you are with each "
+                 "topic")
         st.write("Adjust the stars accordingly, just remember to be honest with yourself")
         st.write("Aim for the stars, land among the sunglasses 😎")
 
 
 def add_to_planner(subject_list):
+    # interfaces to add to the content planner through text input fields in st.expanders
+
     with st.expander("Add to the planner"):
         what_to_add = st.selectbox("Add to the content planner", options=("Add subject", "Add topic"))
 
@@ -28,6 +34,7 @@ def add_to_planner(subject_list):
             st.info("Type the topics you want to add, separate them with commas to add multiple.")
 
             if add_subject is True:
+                # look for each new item in the existing list to remove duplicates
                 for j in new_subject:
                     if j.strip() in subject_list:
                         st.error(f"{j.strip()} is already in the content planner")
@@ -37,6 +44,7 @@ def add_to_planner(subject_list):
                 st.experimental_rerun()
 
         elif what_to_add == "Add topic":
+            # Similar to add subject but for topics, subject strings are modified and resaved to sessionstate
             subjects = []
 
             for i in st.session_state["content_planner"]:
@@ -72,10 +80,12 @@ def add_to_planner(subject_list):
                 st.experimental_rerun()
 
             elif new_topic[0] == "":
+                # if no text input, display a help message
                 st.info("Type the topics you want to add, separate them with commas to add multiple.")
 
 
 def remove_from_planner(subjects, subject_list):
+    # delete from planner by removing the indext of selected subject/modifying and saving the modified subject string
     with st.expander("Remove items from the planner"):
         selected_subject = st.selectbox("Subject to edit", options=subject_list)
         topic_list = ["Delete subject"]
@@ -92,8 +102,9 @@ def remove_from_planner(subjects, subject_list):
                     topic_list.append(f"{topic_name[0]}")
 
         item_to_remove = st.selectbox("What do you want to delete?", options=topic_list)
-        confirm = st.button("Delete")
+        confirm = st.button("🗑️ Delete")
 
+        # proceed with deletion if confirm button is pressed
         if item_to_remove == "Delete subject" and confirm is True:
             del st.session_state["content_planner"][index_to_modify]
             st.experimental_rerun()
@@ -108,7 +119,7 @@ def remove_from_planner(subjects, subject_list):
             for i in topics:
                 updated_subject += "*" + i
 
-            subjects[index_to_modify] = updated_subject
+            subjects[index_to_modify] = updated_subject  # store updated string in session state
 
             st.experimental_rerun()
 
@@ -153,6 +164,7 @@ def main():
                         topic_data = j.split("^")
                         topic_num += 1
 
+                        # convert numbers in topic strings to emojis
                         if topic_data[1] == "0":
                             saved_value = "🤨"
                         elif topic_data[1] == "1":
@@ -172,6 +184,7 @@ def main():
 
                         confidence = st.select_slider(topic_data[0],  options=["🤨", '⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐', "😎"], value=saved_value, key=f"{subject}_{topic_num}")
 
+                        # convert emojis to numbers to be saved in string
                         if confidence == "🤨":
                             subject_average += 0
                             confidence_to_save = "0"
@@ -209,6 +222,7 @@ def main():
                     if topic_num > 0:
                         subject_average = subject_average/topic_num
 
+                        # Display progress bar and completion messages
                         st.progress(int(subject_average/6*100))
 
                         if subject_average == 5:
@@ -245,8 +259,9 @@ def main():
             else:
                 st.info("Type the subjects you want to add")
 
+            # display first time use instructions
             with st.expander("Instructions"):
-                st.subheader("THE PLANNER")
+                st.subheader("The Planner")
                 st.write(
                     "Have you ever thought back on something you've learnt with absolutely no understanding of how you're progressing through it?")
                 st.write("That's where the content planner comes in")
@@ -261,6 +276,8 @@ def main():
 
 
 def update_config():
+    # Update config file by saving all relevant sessionstate data to user_data.photogrudo
+
     config = configparser.ConfigParser()
     config.sections()
     config.read('user_data.photogrudo')
