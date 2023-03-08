@@ -12,7 +12,6 @@ def main():
 
     if st.session_state['logged_in'] is True:
         ss_init()
-
         st.set_page_config(
             page_title="Photogrudo · Statistics · THIS PAGE IS A WORK IN PROGRESS",
             layout="centered",
@@ -130,69 +129,24 @@ def update_config():
     config.read('user_data.photogrudo')
 
     user = st.session_state["user"]
-
-    tdl_to_update = ""
-    tdfl_to_update = ""
-    cmpl_to_update = ""
     ltcmpl_to_update = ""
-    times_to_update = ""
-
-    for i in st.session_state['tdl']:
-        if i != "":
-            tdl_to_update += i + "`"
-
-    for i in st.session_state['tdfl']:
-        if i != "":
-            tdfl_to_update += i + "`"
-
-    for i in st.session_state['cmpl']:
-        if i != "":
-            cmpl_to_update += i + "`"
 
     for i in st.session_state['ltcmpl']:
         if i != "":
             ltcmpl_to_update += i + "`"
 
-    for i in st.session_state["times_to_complete"]:
-        if i != "":
-            times_to_update += str(i) + "`"
-
-    config[user]["name"] = st.session_state["user"]
     config[user]['penguin'] = st.session_state["penguin"]
-    config[user]["tdl"] = tdl_to_update
-    config[user]["tdfl"] = tdfl_to_update
-    config[user]["cmpl"] = cmpl_to_update
     config[user]["ltcmpl"] = ltcmpl_to_update
-    config[user]["num_complete"] = str(st.session_state['num_complete'])
-    config[user]["was_overdue"] = str(st.session_state['was_overdue'])
-    config[user]["times_to_complete"] = times_to_update
+
 
     with open('user_data.photogrudo', 'w') as configfile:
         config.write(configfile)
 
 
 def ss_init():
-    if "cmpl" not in st.session_state:
-        st.session_state['cmpl'] = []
-
-    for i in st.session_state["tdl"]:
-        if i == "":
-            st.session_state["tdl"].remove(i)
-
-    for i in st.session_state["tdfl"]:
-        if i == "":
-            st.session_state["tdfl"].remove(i)
-
-    for i in st.session_state["cmpl"]:
-        if i == "":
-            st.session_state["cmpl"].remove(i)
-
     for i in st.session_state["ltcmpl"]:
         if i == "":
             st.session_state["ltcmpl"].remove(i)
-
-    if "cmpl" not in st.session_state:
-        st.session_state['cmpl'] = []
 
 
 if __name__ == '__main__':

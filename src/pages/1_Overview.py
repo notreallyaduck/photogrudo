@@ -167,8 +167,6 @@ def update_config():
         if i != "":
             times_to_update += str(i) + "`"
 
-    config[user]["name"] = st.session_state["user"]
-    config[user]['penguin'] = st.session_state["penguin"]
     config[user]["tdl"] = tdl_to_update
     config[user]["tdfl"] = tdfl_to_update
     config[user]["cmpl"] = cmpl_to_update

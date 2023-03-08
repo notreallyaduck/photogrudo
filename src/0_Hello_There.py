@@ -18,12 +18,21 @@ def main():
     if "sign_in" not in st.session_state:
         st.session_state["sign_in"] = ""
 
+    if "just_changed_name" not in st.session_state:
+        st.session_state["just_changed_name"] = False
+
     # print page title and subheading
 
     st.title("Photogrudo")
     st.write("photo-gru-doo")
 
     if st.session_state["logged_in"] is True:
+        st.header("Hey!")
+
+        st.write(f"You're logged in as {st.session_state['user']}")
+        st.write("Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
+
+        name_change()
         successful_login()
 
     else:
@@ -61,12 +70,6 @@ def main():
 
 def successful_login():
     # Display page to show with successful login
-
-    st.header("Hey!")
-
-    st.write(f"You're logged in as {st.session_state['user']}")
-    st.write(
-        "Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
 
     if st.button("🔐 Logout") is True:
         st.session_state["sign_in"] = ""
@@ -167,6 +170,54 @@ def login_attempt(user, password):
             time.sleep(3)
     except KeyError:
         st.error("Looks like that username does not exist. Do you have an account? Check if you've spelled your name wrong.")
+
+
+def name_change():
+    config = configparser.ConfigParser()
+    config.sections()
+    config.read('user_data.photogrudo')
+
+    with st.expander("Change your username!"):
+        user = st.session_state["user"]
+        new_name = st.text_input("Type your new username.")
+
+        password = st.text_input(f"Type your password to confirm your name change from {user} to {new_name}",
+                                 type="password")
+        # display password entry field if username does not exist already and field is not blank
+
+        confirm = st.button("Make the change")
+
+        if confirm is True and password == config[user]["password"] and new_name != "" and new_name not in config:
+            config.add_section(new_name)
+            config[new_name]["password"] = config[user]["password"]
+            config[new_name]["name"] = new_name
+            config[new_name]['penguin'] = config[user]["penguin"]
+            config[new_name]["tdl"] = config[user]["tdl"]
+            config[new_name]["tdfl"] = config[user]["tdfl"]
+            config[new_name]["cmpl"] = config[user]["cmpl"]
+            config[new_name]["ltcmpl"] = config[user]["ltcmpl"]
+            config[new_name]['num_complete'] = config[user]["num_complete"]
+            config[new_name]["times_to_complete"] = config[user]["times_to_complete"]
+            config[new_name]["content_planner"] = config[user]["content_planner"]
+            config[new_name]["was_overdue"] = config[user]["was_overdue"]
+
+            st.session_state["user"] = new_name
+
+            config.remove_section(user)
+
+            # update config file for new users
+            with open('user_data.photogrudo', 'w') as configfile:
+                config.write(configfile)
+                st.session_state["just_changed_name"] = True
+
+            st.experimental_rerun()
+
+        elif new_name in config:  # display error message for username taken
+            if not st.session_state["just_changed_name"] is True:
+                st.error("Looks like that username is taken! Choose a different username.")
+            else:
+                st.success("Successfully changed your name")
+            st.session_state["just_changed_name"] = False
 
 
 # Press the green button in the gutter to run the script.

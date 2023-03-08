@@ -180,6 +180,13 @@ def main():
                 st.info("Type the subjects you want to add")
         update_config()
 
+        with st.expander("Instructions"):
+            st.write("Have you ever thought back on something you've learnt with absolutely no understanding of how you're progressing through it?")
+            st.write("That's where the content planner comes in")
+            st.subheader("Step One")
+            st.write("Type your subjects or broad content areas in the field above this section")
+            st.write("Enter them separated with commas to add them all at once. Input one item to add one subject.")
+
     else:
         st.error("Log in please")
 
@@ -191,41 +198,13 @@ def update_config():
 
     user = st.session_state["user"]
 
-    tdl_to_update = ""
-    tdfl_to_update = ""
-    cmpl_to_update = ""
-    ltcmpl_to_update = ""
-    times_to_update = ""
+    content_to_update = ""
 
-    for i in st.session_state['tdl']:
+    for i in st.session_state["content_planner"]:
         if i != "":
-            tdl_to_update += i + "`"
+            content_to_update += str(i) + "`"
 
-    for i in st.session_state['tdfl']:
-        if i != "":
-            tdfl_to_update += i + "`"
-
-    for i in st.session_state['cmpl']:
-        if i != "":
-            cmpl_to_update += i + "`"
-
-    for i in st.session_state['ltcmpl']:
-        if i != "":
-            ltcmpl_to_update += i + "`"
-
-    for i in st.session_state["times_to_complete"]:
-        if i != "":
-            times_to_update += str(i) + "`"
-
-    config[user]["name"] = st.session_state["user"]
-    config[user]['penguin'] = st.session_state["penguin"]
-    config[user]["tdl"] = tdl_to_update
-    config[user]["tdfl"] = tdfl_to_update
-    config[user]["cmpl"] = cmpl_to_update
-    config[user]["ltcmpl"] = ltcmpl_to_update
-    config[user]["num_complete"] = str(st.session_state['num_complete'])
-    config[user]["was_overdue"] = str(st.session_state['was_overdue'])
-    config[user]["times_to_complete"] = times_to_update
+    config[user]["content_planner"] = content_to_update
 
     with open('user_data.photogrudo', 'w') as configfile:
         config.write(configfile)
