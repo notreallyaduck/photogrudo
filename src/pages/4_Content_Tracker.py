@@ -31,7 +31,7 @@ def add_to_planner(subject_list):
         if what_to_add == "Add subject":
             new_subject = st.text_input("Subject Name").split(",")
             add_subject = st.button("Add")
-            st.info("Type the topics you want to add, separate them with commas to add multiple.")
+            st.info("Type the subject you want to add, separate them with commas to add multiple.")
 
             if add_subject is True:
                 # look for each new item in the existing list to remove duplicates
@@ -226,13 +226,13 @@ def main():
                         st.progress(int(subject_average/6*100))
 
                         if subject_average == 5:
-                            st.write("Congratulations, you're at 100 percent understanding of this subject")
+                            st.write(f"Congratulations {st.session_state['user']}, you're at 100 percent understanding of this subject")
                         elif subject_average > 2.5:
-                            st.write("Congratulations, you're more than halfway there")
+                            st.write(f"Congratulations {st.session_state['user']}, you're more than halfway there")
                         elif subject_average == 0:
-                            st.write("Make a start on this subject")
+                            st.write(f"Make a start on this subject {st.session_state['user']}")
                         else:
-                            st.write("You've still got a ways to go, but you got this!")
+                            st.write(f"You've still got a ways to go, but you got this {st.session_state['user']}!")
 
             st.write("")
 
