@@ -104,7 +104,7 @@ def add_user():
         config[user]['num_complete'] = "0"
         config[user]["times_to_complete"] = ""
         config[user]["content_planner"] = ""
-        config[user]["was_overdue"] = ""
+        config[user]["was_overdue"] = "0"
 
         st.session_state["user"] = user
         st.session_state["penguin"] = "Assets/motivation_penguin.gif"

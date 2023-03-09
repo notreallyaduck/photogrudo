@@ -12,7 +12,7 @@ def main():
     if st.session_state['logged_in'] is True:
         ss_init()
         st.set_page_config(
-            page_title="Photogrudo · Statistics · THIS PAGE IS A WORK IN PROGRESS",
+            page_title="Photogrudo · Statistics",
             layout="centered",
             initial_sidebar_state="auto",
         )
