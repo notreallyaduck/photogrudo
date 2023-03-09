@@ -48,7 +48,10 @@ def main():
         due_date = "No due date"
 
         if due == "Task is due":
-            due_date = st.date_input("Date due", min_value=datetime.date.today())
+            min_date = datetime.date.today()
+            min_date = min_date - datetime.timedelta(weeks=1)
+
+            due_date = st.date_input("Date due", min_value=min_date)
 
         if new_task and add_type != "" and add_type != "both selected":
             add_button = st.button(f'✅ Add "{new_task}" to: {add_type} tasks')
