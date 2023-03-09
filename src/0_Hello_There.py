@@ -226,7 +226,7 @@ def name_change():
             else:
                 st.success("Successfully changed your name")
             st.session_state["just_changed_name"] = False
-        elif password != config[user]["password"]:
+        elif password != config[user]["password"] and password != "":
             st.error("Double check your password.")
 
 
