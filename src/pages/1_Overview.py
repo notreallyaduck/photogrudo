@@ -32,26 +32,25 @@ def main():
         insert_corny_quote()
         st.write(" ")
 
-        # display messages for tasks due soon on do now
-        for i in st.session_state['tdl']:
-            j = i.split(" · ")
-            if j[2] != "No due date":
-                h = j[2].split("-")
+        due_message = []
+        lists_to_check = ["tdl", "tdfl"]
+        # add due messages to print from tdl
 
-                date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
-                if 0 < time.mktime(date_time.timetuple()) + 86400 - time.time() < 86400:
-                    due_message = "Due soon · " + j[0] + " · " + h[2] + "/" + h[1] + "/" + h[0]
-                    st.markdown(f":blue[{due_message}]")
+        for f in lists_to_check:
+            for i in st.session_state[f]:
+                j = i.split(" · ")
+                if j[2] != "No due date":
+                    h = j[2].split("-")
 
-        # display messages for tasks due soon on do soon
-        for i in st.session_state['tdfl']:
-            j = i.split(" · ")
+                    date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
+                    if 0 < time.mktime(date_time.timetuple()) + 86400 - time.time() < 86400:
+                        due_message.append(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
 
-            if j[2] != "No due date":
-                h = j[2].split("-")
-                date_time = datetime.datetime(int(h[0]), int(h[1]), int(h[2]))
-                if 0 < time.mktime(date_time.timetuple()) - time.time() < 86400:
-                    st.write(f"Due soon · {j[0]} · {h[2]}/{h[1]}/{h[0]}")
+        # display messages for tasks due soon
+        if len(due_message) > 0:
+            if st.checkbox(f"Show {len(due_message)} tasks due soon") is True:
+                for i in due_message:
+                    st.markdown(f":blue[{i}]")
 
         # display checkbox to change list checkbox function
         checkbox_function = st.radio("Checkboxes should:", options=("✅ Mark tasks as complete", "🗑️ Delete tasks"))

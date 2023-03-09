@@ -60,6 +60,7 @@ def main():
                 # Add the task by calling the add_task function and display a success message
                 add_task(new_task, add_type, due_date)
                 st.success(f"Successfully added {new_task}.")
+
                 time.sleep(1)
                 st.experimental_rerun()
 

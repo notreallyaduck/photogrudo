@@ -70,7 +70,10 @@ def main():
                         elif when_made > 1:
                             st.write(f"{j[0]} · Was due {date_due[2]}/{date_due[1]}/{date_due[0]} · Created {when_made} days ago")
                     else:
-                        st.write(f"{j[0]} · No due date · Created {when_made} days ago")
+                        if when_made <= 1:
+                            st.write(f"{j[0]} · No due date · Created recently")
+                        elif when_made > 1:
+                            st.write(f"{j[0]} · No due date · Created {when_made} days ago")
 
         else:
             st.write("Stats will appear here after you've completed a couple tasks. Keep at it.")
