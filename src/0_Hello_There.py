@@ -33,6 +33,14 @@ def main():
         st.write("Go to the overview page in the sidebar for your to do list. (Press the little arrow to expand the sidebar)")
 
         name_change()
+
+        with open("Assets/Photogrudo - User Manual.pdf", "rb") as file:
+            st.download_button(
+                label="📑 Get started by reading the photogrudo user guide",
+                data=file,
+                file_name="Getting Started with Photogrudo.pdf",
+            )
+
         successful_login()
 
     else:
@@ -69,7 +77,7 @@ def main():
 
 
 def successful_login():
-    # Display page to show with successful login
+    # Display logout button to show with successful login
 
     if st.button("🔐 Logout") is True:
         st.session_state["sign_in"] = ""
