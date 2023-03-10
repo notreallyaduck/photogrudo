@@ -129,6 +129,9 @@ def main():
     if "logged_in" not in st.session_state:
         st.session_state["logged_in"] = False
 
+    if "total" not in st.session_state:
+        st.session_state["total"] = 0
+
     if st.session_state["logged_in"] is True:
         ss_init()
         st.set_page_config(
@@ -139,6 +142,7 @@ def main():
 
         st.title("The photogrudo content tracker")
         st.write("Use this page to track progression through all your courses")
+        total = 0
 
         if len(st.session_state["content_planner"]) > 0:
             subjects = st.session_state["content_planner"]
@@ -158,10 +162,14 @@ def main():
                 st.header(subject)
                 topics.remove(topics[0])
 
+                expander_name = ""
+
                 if len(topics) == 0:
                     st.write(f"Get started with {subject} by adding some topics!")
-
-                expander_name = str(len(topics)) + " Topics"
+                elif len(topics) == 1:
+                    expander_name = str(len(topics)) + " Topic"
+                else:
+                    expander_name = str(len(topics)) + " Topics"
 
                 with st.expander(expander_name):
                     for j in topics:
@@ -191,24 +199,31 @@ def main():
                         # convert emojis to numbers to be saved in string
                         if confidence == "🤨":
                             subject_average += 0
+                            total += 0
                             confidence_to_save = "0"
                         elif confidence == "⭐":
                             subject_average += 1
+                            total += 1
                             confidence_to_save = "1"
                         elif confidence == "⭐⭐":
                             subject_average += 2
+                            total += 2
                             confidence_to_save = "2"
                         elif confidence == "⭐⭐⭐":
                             subject_average += 3
+                            total += 3
                             confidence_to_save = "3"
                         elif confidence == "⭐⭐⭐⭐":
                             subject_average += 4
+                            total += 4
                             confidence_to_save = "4"
                         elif confidence == "⭐⭐⭐⭐⭐":
                             subject_average += 5
+                            total += 5
                             confidence_to_save = "5"
                         elif confidence == "😎":
                             subject_average += 6
+                            total += 6
                             confidence_to_save = "6"
 
                         for m in strings:
@@ -229,15 +244,14 @@ def main():
                         # Display progress bar and completion messages
                         st.progress(int(subject_average/6*100))
 
-                        if subject_average == 5:
+                        if subject_average == 6:
                             st.write(f"Congratulations {st.session_state['user']}, you're at 100 percent understanding of this subject")
-                        elif subject_average > 2.5:
+                        elif subject_average > 3:
                             st.write(f"Congratulations {st.session_state['user']}, you're more than halfway there")
                         elif subject_average == 0:
                             st.write(f"Make a start on this subject {st.session_state['user']}")
                         else:
                             st.write(f"You've still got a ways to go, but you got this {st.session_state['user']}!")
-
 
             st.write("")
 
@@ -273,6 +287,10 @@ def main():
                 st.subheader("Step One")
                 st.write("Type your subjects or broad content areas in the field above this section")
                 st.write("Enter them separated with commas to add them all at once. Input one item to add one subject.")
+
+        if total != st.session_state["total"]:
+            st.session_state["total"] = total
+            st.experimental_rerun()
 
         update_config()
 
