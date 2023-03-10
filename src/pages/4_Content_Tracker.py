@@ -158,8 +158,12 @@ def main():
                 st.header(subject)
                 topics.remove(topics[0])
 
-                with st.expander("Topics"):
+                if len(topics) == 0:
+                    st.write(f"Get started with {subject} by adding some topics!")
 
+                expander_name = str(len(topics)) + " Topics"
+
+                with st.expander(expander_name):
                     for j in topics:
                         topic_data = j.split("^")
                         topic_num += 1
@@ -233,6 +237,7 @@ def main():
                             st.write(f"Make a start on this subject {st.session_state['user']}")
                         else:
                             st.write(f"You've still got a ways to go, but you got this {st.session_state['user']}!")
+
 
             st.write("")
 
